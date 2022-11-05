@@ -36,13 +36,13 @@ class phoneBk:
         if(grp == 3):
             self.junk.append(phRec)
 
-    def del_rec(self, phNo):                            #Task 0
+    def del_rec(self, grp, phNo):                       #Task 0
         pass
 
     def show_latest_sorted_rec(self, grp):              #Task 1
         pass
 
-    def check_email(self):                              #Task 2
+    def check_email(self, grp):                         #Task 2
         pass
 
     def show_name_sorted_rec(self, ascending):          #Task 3
@@ -50,5 +50,5 @@ class phoneBk:
                                                             # ascending = 1: Ascending
         pass                
 
-    def move_to_group(self, PhNo, grp):                 #Task 4
+    def copy_to_group(self, PhNo, grp):                 #Task 4
         pass
