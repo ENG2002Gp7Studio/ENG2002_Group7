@@ -18,3 +18,7 @@ Assignment2
 - A2_for_develop_n_debug.py (用于编写调试)
 - phonebook_package (包文件夹)
   - phonebook.py (模块Module)
+  
+## 程序框架
+
+<img src="https://github.com/ENG2002Gp7Studio/ENG2002_Group7/blob/master/Sources/Program%20Structure.jpg?raw=true" alt="Animated gif demo of the path planning">
