@@ -10,8 +10,10 @@
 #####################################################################################
 
 class phoneRec:
-    a = 5
+    def __init__(self):
+        pass
 
 class phoneBk:
-    pass
+    def __init__(self):
+        pass
 
