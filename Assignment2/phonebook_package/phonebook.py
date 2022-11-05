@@ -1,7 +1,7 @@
 #####################################################################################
 #   This module is developed by ENG2002-Group7                                   
 #   
-#   Contributers for tasks:
+#   Collaborators for tasks:
 #       Task 0: 
 #       Task 1:
 #       Task 2:
