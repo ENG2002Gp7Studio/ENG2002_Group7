@@ -27,6 +27,10 @@ class phoneBk:
 
         self.group = [-1, "Family", "Friend", "Junk"]
 
+    def sys_init(self, userInfo):
+
+        pass
+
     def add_rec(self, phRec, grp):                      
                                                         #group 1-Family 2-Friend 3-Junk
         if(grp == 1):
@@ -52,3 +56,9 @@ class phoneBk:
 
     def copy_to_group(self, PhNo, grp):                 #Task 4
         pass
+
+    def menu():
+        pass
+
+
+
