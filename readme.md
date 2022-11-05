@@ -1,10 +1,11 @@
 ## Basic Info
-This repository is for ENG2002 Group 7
+This repository is for ENG2002 Group 7's Application Development Assignment
 
-Member:
-- LIN Ju
-- NI Rouheng
-- QIN Qijun
+| Name       | Student ID |
+|------------|------------|
+| LIN Ju     | 21106434D  |
+| NI Rouheng |            |
+| QIN Qijun  |            |
 
 ## 程序命名规范
 
