@@ -1,11 +1,11 @@
 ## Basic Info
 This repository is for ENG2002 Group 7's Application Development Assignment
 
-| Name       | Student ID |
-|------------|------------|
-| LIN Ju     | 21106434D  |
-| NI Rouheng | 21102803D  |
-| QIN Qijun  | 21101279D  |
+| Name       | Student ID | Contribution |
+|------------|------------|--------------|
+| LIN Ju     | 21106434D  |              |
+| NI Rouheng |            |              |              
+| QIN Qijun  | 21101279D  |              |
 
 ## 程序命名规范
 
