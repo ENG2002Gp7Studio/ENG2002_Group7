@@ -21,4 +21,4 @@ Assignment2
   
 ## 程序框架
 
-<img src="https://github.com/ENG2002Gp7Studio/ENG2002_Group7/blob/master/Sources/Program%20Structure.jpg?raw=true" alt="Animated gif demo of the path planning">
+<img src="https://github.com/ENG2002Gp7Studio/ENG2002_Group7/blob/master/Sources/Program%20Structure.jpg?raw=true" alt="Program Structure">
