@@ -11,25 +11,32 @@
 
 
 class phoneRec:
-    def __init__(self, name, nickname, phoneNo, email, lastCallDate):
+    def __init__(self, name, nickname, phoneNo, email, lastCallDate, group):
         self.name = name
         self.nickname = nickname
         self.phoneNo = phoneNo
         self.email = email
         self.lastCallDate = lastCallDate
+        self.group = group
 
     
 class phoneBk:
-    def __init__(self):
+    def __init__(self, phoneRecList = -1):
         self.family = []
         self.friend = []
         self.junk = []
 
-        self.group = [-1, "Family", "Friend", "Junk"]
+        self.group = [-1, "Family", "Friend", "Junk"]   #group 1-Family 2-Friend 3-Junk
 
-    def sys_init(self, userInfo):
+        if(phoneRecList != -1):
+            self.sys_init(self, phoneRecList)
 
-        pass
+    def sys_init(self, phoneRecList):
+
+        for i in range(0, len(phoneRecList)):
+            self.add_rec(phoneRecList[i], phoneRecList[i].group)
+            
+
 
     def add_rec(self, phRec, grp):                      
                                                         #group 1-Family 2-Friend 3-Junk
@@ -62,3 +69,5 @@ class phoneBk:
 
 
 
+def ph_database_access(filePath):
+    pass
