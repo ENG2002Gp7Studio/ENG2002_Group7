@@ -7,10 +7,9 @@ import phonebook_package.phonebook as pb
 import user_management_system.user_management_sys as ums
 
 
+user = ums.UserManageSys()
+if(user.userAccess):
 
-userInfo, userAccess = ums.UserManageSys.sys_init()
-if(userAccess):
-    pb.phoneBk.sys_init(userInfo)
-
-
-
+    pbFilePath = user.uDBRootPath + '\\phonebook_database\\' + str(user.userInfo.userID)
+    # phoneRec = pb.ph_database_access(pbFilePath)    
+    # phonebook = pb(phoneRec)
