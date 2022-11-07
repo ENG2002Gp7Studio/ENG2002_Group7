@@ -15,21 +15,24 @@ class UserManageSys:
                                                 #User system init
         self.userInfo = userInfo
         self.userDataBase = []
+        self.uDBDisk = -1
         self.uDBRootPath = uDBRootPath
         self.userAccess = False
-        self.sys_init(userPwd)
+        self.sys_status = self.sys_init(userPwd)
 
     
     def sys_init(self, userPwd = -1):
         
-        if(self.userInfo == -1):
-            return self.menu()
+        if(self.uDBRootPath == -1):
+            return self.built_in_menu()
         else:
+            if(self.file_location_detect() == -3):
+                return -3
             return self.user_check(self.userInfo.userName, userPwd)
 
 
 
-    def menu(self):
+    def built_in_menu(self):
 
         while(self.uDBRootPath == -1):
             self.file_location_detect()
@@ -333,27 +336,41 @@ class UserManageSys:
     def file_location_detect(self):
 
         locationAccess = False
+        
+        if(self.uDBRootPath != -1):
+            if(os.path.isfile(self.uDBRootPath + "\\sysInit.Check" and
+               os.path.isfile(self.uDBRootPath + "\\userDataBase.ums"))
+               self.uDBDisk = self.uDBRootPath[0]
+               locationAccess = True
+               return 0
+            else:
+               return -1
+                                 
+        
         fileDisk = 'Z'
         while(fileDisk >= 'A'):
-            if(os.path.isfile(fileDisk + ":\\UserManagementSystem\\sysInit.check") and 
-                os.path.isfile(fileDisk + ":\\UserManagementSystem\\userDataBase.ums")):
+            rootPathTemp = fileDisk + ":\\UserManagementSystem"
+            if(os.path.isfile(rootPathTemp + "\\sysInit.check") and 
+                os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
                 locationAccess = True
                 break
-            if(os.path.isfile(fileDisk + ":\\UserManagementSystem\\userDataBase.ums")):
-                f_temp = open(fileDisk + ":\\UserManagementSystem\\sysInit.check", "w")
+            if(os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
+                f_temp = open(rootPathTemp + "\\sysInit.check", "w")
                 f_temp.close()
                 locationAccess = True
                 break
-            if(os.path.isfile(fileDisk + ":\\UserManagementSystem\\sysInit.check")):
-                f_temp = open(fileDisk + ":\\UserManagementSystem\\userDataBase.ums", "w")
+            if(os.path.isfile(rootPathTemp + "\\sysInit.check")):
+                f_temp = open(rootPathTemp + "\\userDataBase.ums", "w")
                 f_temp.close()
-                self.uDBRootPath = fileDisk
+                self.uDBDisk = fileDisk
+                self.uDBRootPath = rootPathTemp
                 return 0
 
             fileDisk = chr(ord(fileDisk) - 1)
         
         if(locationAccess):
-            self.uDBRootPath = fileDisk
+            self.uDBDisk = fileDisk
+            self.uDBRootPath = rootPathTemp
         else:
             fileDisk = '0'
             print("Is the first time to use UserManagementSystem(UMS)?")
@@ -374,10 +391,14 @@ class UserManageSys:
             f_temp.close()
 
             if(os.path.isfile(fileDisk + ":\\UserManagementSystem\\sysInit.check")):
-                self.uDBRootPath = fileDisk
+                self.uDBDisk = fileDisk
+                self.uDBRootPath = fileDisk + ":\\UserManagementSystem"
+                return 0
             else:
                 print("System Error: 001\nFile cannot be created!")
+                self.uDBDisk = -1
                 self.uDBRootPath = -1
+                return -1
 
 
     def user_id_create(self, userName):
