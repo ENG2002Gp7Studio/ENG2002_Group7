@@ -11,5 +11,5 @@ user = ums.UserManageSys()
 if(user.userAccess):
 
     pbFilePath = user.uDBRootPath + '\\phonebook_database\\' + str(user.userInfo.userID)
-    # phoneRec = pb.ph_database_access(pbFilePath)    
+    phoneRec = pb.ph_database_access(pbFilePath)    
     # phonebook = pb(phoneRec)

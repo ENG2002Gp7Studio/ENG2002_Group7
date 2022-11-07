@@ -9,6 +9,7 @@
 #       Task 4:                                                                          
 #####################################################################################
 
+import os
 
 class phoneRec:
     def __init__(self, name, nickname, phoneNo, email, lastCallDate, group):
@@ -18,23 +19,35 @@ class phoneRec:
         self.email = email
         self.lastCallDate = lastCallDate
         self.group = group
+        
 
     
 class phoneBk:
-    def __init__(self, phoneRecList = -1):
+    def __init__(self, useFilePath = True, phoneRecList = -1):
         self.family = []
         self.friend = []
         self.junk = []
 
         self.group = [-1, "Family", "Friend", "Junk"]   #group 1-Family 2-Friend 3-Junk
+        self.filePath = -1
+ 
 
+        self.sys_init(self, useFilePath, phoneRecList)
+
+        
+
+    def sys_init(self, useFilePath, phoneRecList):
+                                                        #0: Everything OK; -1: File not exist; 
         if(phoneRecList != -1):
-            self.sys_init(self, phoneRecList)
+            if(useFilePath):
+                self.ph_database_access(phoneRecList)
+                
 
-    def sys_init(self, phoneRecList):
-
-        for i in range(0, len(phoneRecList)):
-            self.add_rec(phoneRecList[i], phoneRecList[i].group)
+            else:
+                for i in range(0, len(phoneRecList)):
+                    self.add_rec(phoneRecList[i], phoneRecList[i].group)
+        else:
+            pass
             
 
 
@@ -67,7 +80,22 @@ class phoneBk:
     def menu():
         pass
 
+    def ph_database_access(self, filePath):
+        
+        if(os.path.isfile(filePath)):
+            ph_database = open(filePath, "r")
+
+            while(True):
+                recSour = ph_database.readline()
+                if(recSour == ""):
+                    break
+                recSplit = recSour.split("///")             #Maybe need some encrytion or decryption
+                recTemp = phoneRec(recSplit[0], recSplit[1], recSplit[2], recSplit[3], recSplit[4], recSplit[5])
+                self.add_rec(recTemp, recSplit[5])
+        
+        else:
+            return -1
 
 
-def ph_database_access(filePath):
-    pass
+
+
