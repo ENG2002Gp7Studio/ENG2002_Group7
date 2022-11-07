@@ -11,11 +11,11 @@ class UserInfo:
 
 class UserManageSys:
 
-    def __init__(self, userInfo = -1, userPwd = -1):  
+    def __init__(self, uDBRootPath = -1, userInfo = -1, userPwd = -1):  
                                                 #User system init
         self.userInfo = userInfo
         self.userDataBase = []
-        self.uDBRootPath = -1
+        self.uDBRootPath = uDBRootPath
         self.userAccess = False
         self.sys_init(userPwd)
 
@@ -231,6 +231,9 @@ class UserManageSys:
 
             if(userAll == -2):
                 return -2, -2, -2
+
+            if(userAll == -3):
+                return -3, -3, -3
             
             for user in userAll:
                 if(self.ums_encryption(userID) in user):
@@ -239,6 +242,9 @@ class UserManageSys:
                     return -2, -2, -2
 
         else:
+
+            if(userAll == -3):
+                return -3, -3, -3
 
             if(not(self.ums_encryption(userID) in userAll[0] or self.ums_encryption(userID) in userAll[1])):
                 return -2, -2, -2
@@ -258,6 +264,9 @@ class UserManageSys:
 
     def user_database_read(self):
                                                                          # ID + Name + Pwd
+        if(self.uDBRootPath == -1):
+            return -3
+
         userFile = open(self.uDBRootPath + ":\\UserManagementSystem\\userDataBase.ums", 'r', encoding='utf-8')
 
         if(len(userFile.readline()) == 0):
@@ -393,3 +402,19 @@ class UserManageSys:
             op += chr(ord(ip[i]) - 35409)
 
         return op
+
+
+
+
+def show_user_database(filePath):
+    if(os.path.isfile(filePath)):
+        f = open(filePath, 'r')
+        while(True):
+            user_sour = f.readline()
+            if(user_sour == ""):
+                return 0
+            user_enc = user_sour.split('*')
+            print(UserManageSys.ums_decryption(user_enc[0]) + "\t\t" + 
+                    UserManageSys.ums_decryption(user_enc[1]) + "\t\t" + 
+                    UserManageSys.ums_decryption(user_enc[2]))
+
