@@ -16,7 +16,9 @@ def main():
     # ums.show_user_database(user.uDBRootPath)
     # input()
     phR = [pb.phoneRec("64216528", 1, "QIN Qijun", "QuintinUmi", "qqj030212@gmail.com", str(datetime.datetime.now())),
-            pb.phoneRec("19877555671", 2, "QQJ", "QTN", "qqj030212@163.com", str(datetime.datetime.now()))]
+            pb.phoneRec("19877555671", 2, "QQJ", "QTN", "qqj030212@163.com", str(datetime.datetime.now())), 
+            pb.phoneRec("13417082571", 1, "LIN Ju", "Thorkee", "thorkee@outlook.com", str(datetime.datetime.now()))]
+            
     if(user.userAccess):
         
         while(True):
