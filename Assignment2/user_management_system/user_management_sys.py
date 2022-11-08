@@ -78,6 +78,11 @@ class UserManageSys:
                             break
 
                     if(ip == '1'):
+                        if(not self.user_name_check(ipUserID)):
+                            print("\nYour user name is too short or too long (2~32 characters)\nPlease Change User!\n")
+                            os.system("PAUSE")
+                            continue
+
                         while(True):
                             os.system("cls")
                             print("UserName: {}".format(ipUserID))
@@ -143,9 +148,15 @@ class UserManageSys:
         if(ip == "2"):
 
             while(True):
+               
+                while(True):
+                    os.system("cls")
+                    ipUserName = input("Please input your user NAME (2~32 Characters): ")  
+                    if(self.user_name_check(ipUserName)):
+                        break
+                    else:
+                        print("\nYour user name is too short or too long (2~32 characters)\nPlease re-input!")
 
-                os.system("cls")
-                ipUserName = input("Please input your user NAME: ")  
                 userID, userName, userStatus, uIndex= self.user_check(ipUserName)    
 
                 if(userStatus == -3):
@@ -228,6 +239,8 @@ class UserManageSys:
         print("                                         Smart User Management System! ")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
         os.system("PAUSE")
+
+
 
     def user_sign_up(self, ipUserName, userPwd, ipUserID = False):
 
@@ -344,7 +357,7 @@ class UserManageSys:
 
     def user_database_write(self, userName, userPwd, ins = False, userID = False):
 
-        if(ins <= 0 or ins != False):
+        if(ins == False or ins <= 0):
 
             if(userID == False):
                 userID = self.user_id_create(userName)
@@ -358,20 +371,22 @@ class UserManageSys:
 
         else:
 
-            userFile = open(self.uDBRootPath + "\\userDataBase.ums", 'w', encoding='utf-8')
+            userFile = open(self.uDBRootPath + "\\userDataBase.ums", 'r', encoding='utf-8')
+            userAll = userFile.readlines()
+            userFile.close()
 
-            while(True):
-                user_temp = userFile.readline()
-                if(user_temp == ""):
-                    userFile.close()
-                    return -2
-
-                user_temp = user_temp.split('*')
+            for i in range(0, len(userAll)):
+                
+                user_temp = userAll[i].split('*')
                 if(user_temp[1] == self.ums_encryption(userName)):
-                    userFile.seek(userFile.tell() - len(user_temp))
-                    userFile.write(user_temp[0] + '*' + self.ums_encryption(userName) + '*' + self.ums_encryption(userPwd) + '\n')
+                    userAll[i] = user_temp[0] + '*' + self.ums_encryption(userName) + '*' + self.ums_encryption(userPwd) + '\n'
                     break
             
+            userFile = open(self.uDBRootPath + "\\userDataBase.ums", 'w', encoding='utf-8')
+            for i in range(0, len(userAll)):
+
+                userAll = userFile.write(userAll[i])
+                
             userFile.close()
             return 0
 
@@ -459,12 +474,16 @@ class UserManageSys:
 
 
 
-
+    def user_name_check(self, userName):
+        if(2 <= len(userName) <= 32):
+            return True
+        else:
+            return False
 
     def user_id_create(self, userName):
-        userID = ""
-        for i in range(len(userName)):
-            userID += str(ord(userName[i])%10)
+        userID = "0" * 10
+        for i in range(0, 10):
+            userID = userID[0: i] + str(ord(userName[i % len(userName) - 1]) % 10) + userID[i: len(userID)]
         userID += str(int(datetime.datetime.timestamp(datetime.datetime.now())))
         return userID
         
