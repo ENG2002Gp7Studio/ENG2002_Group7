@@ -1,7 +1,7 @@
 import os
 import datetime
 import user_management_system.user_management_sys as ums
-import phonebook_package.phonebook as pb
+#import phonebook_package.phonebook as pb
 
 # def ums_encryption(ip):
 
@@ -53,3 +53,25 @@ import phonebook_package.phonebook as pb
 
 print(datetime.datetime.now())
 
+a = [0, 1, 2, 3]
+b = "0123456"
+print(b[0: 1])
+if(False == 5):
+    print("yes")
+
+a = open("H:\\test.txt", "w")
+a.write("123456789\nabcdefghi\n987654321\n")
+a.close()
+a = open("H:\\test.txt", "r")
+b = a.readlines()
+a.close()
+print(b)
+# a = open("H:\\test.txt", "r+")
+# a.readline()
+# w = a.readline()
+# l = len(w)
+# a.seek(a.tell() - l - 1)
+# a.write(' ' * l)
+# a.seek(a.tell() - l)
+# a.write("89")
+# a.close()
