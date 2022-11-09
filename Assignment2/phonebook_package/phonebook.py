@@ -62,16 +62,15 @@ class phoneBk:
             
 
 
-    def add_rec(self, phRec, grp):                      
+    def add_rec(self, phRec):                      
                                                         #group 1-Family 2-Friend "3"-Junk
-        grp = int(grp)
         if(self.ph_conflict_check(phRec.phoneNo)):
             return [phRec]
-        if(grp == 1):
+        if(phRec.group == 1):
             self.family.append(phRec)
-        if(grp == 2):
+        if(phRec.group == 2):
             self.friend.append(phRec)
-        if(grp == 3):
+        if(phRec.group == 3):
             self.junk.append(phRec)
         return []
 
