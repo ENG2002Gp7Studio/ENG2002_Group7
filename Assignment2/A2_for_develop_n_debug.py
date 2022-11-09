@@ -15,9 +15,6 @@ def main():
     user = ums.UserManageSys()
     # ums.show_user_database(user.uDBRootPath)
     # input()
-    phR = [pb.phoneRec("64216528", 1, "QIN Qijun", "QuintinUmi", "qqj030212@gmail.com", str(datetime.datetime.now())),
-            pb.phoneRec("19877555671", 2, "QQJ", "QTN", "qqj030212@163.com", str(datetime.datetime.now())), 
-            pb.phoneRec("13417082571", 1, "LIN Ju", "Thorkee", "thorkee@outlook.com", str(datetime.datetime.now()))]
             
     if(user.userAccess):
         
@@ -54,8 +51,7 @@ def main():
             
             if(ip == '1'):
                 pbFilePath = user.uDBRootPath[0] + ':\\PhoneBookSystem\\' + str(user.userInfo.userID) + ".pb"
-                uPhoneRec = pb.phoneBk(pbFilePath, False, phR)    
-                uPhoneRec.ph_syncing_to_database()
+                uPhoneRec = pb.phoneBk(pbFilePath)
                 uPhoneRec.built_in_menu()
 
 
