@@ -1,7 +1,26 @@
 #####################################################################################
-#   This is for programming develop and debug only, but not for the final product   
-#                                                                                   
+#   This module is developed by ENG2002-Group7                                   
+#   
+#   Collaborators: 
+#       LIN Ju 
+#       NI Rongheng 
+#       QIN Qijun 21101279D
+#   
+#   Workshop: https://github.com/ENG2002Gp7Studio/ENG2002_Group7
 #####################################################################################
+
+#######################################################################################################################
+#   This code is an example to present the application of the User Manage System and PhoneBook System    
+#   
+#   The whole program is divided into User Manage System(UMS) and PhoneBook System(PB), which are two sets of 
+#   databases system. UMS enables the management of user databases. At the same time, the UMS database can be 
+#   linked to the PB database, with different users corresponding to different data units in PB. 
+# 
+#   The two systems are highly independent and can be applied separately to different scenarios and requirements. 
+#   Both systems provide external interfaces to different systems, as long as the parameters are provided.  
+# 
+#   For more information, pleaes read the readme.txt.                                                                           
+########################################################################################################################
 
 import os
 import sys
@@ -12,14 +31,20 @@ import user_management_system.user_management_sys as ums
 
 
 def main():
-    user = ums.UserManageSys()
+    user = ums.UserManageSys()  # User initialisation
+                                # The specific database address can be passed into the class, 
+                                #   and then the system will use this address.
+                                # It can also accept UserName and Pwd as parameters. Once checked against the database,
+                                #   this class will return the properties of this user
+                                # If no parameters are provided, the system will use the default addressing for database.
+
     # ums.show_user_database(user.uDBRootPath)
     # input()
             
-    if(user.userAccess):
+    if(user.userAccess):        # Successful Checking, then entry the user interface
         
         while(True):
-
+                                # Greeting set up to make a more beautiful menu
             timeList = pb.phoneBk.time_split_str(pb.phoneBk, datetime.datetime.now())
 
             if(0 <= int(timeList[3]) <= 5):
@@ -50,9 +75,10 @@ def main():
                     break
             
             if(ip == '1'):
-                pbFilePath = user.uDBRootPath[0] + ':\\PhoneBookSystem\\' + str(user.userInfo.userID) + ".pb"
-                uPhoneRec = pb.phoneBk(pbFilePath)
-                uPhoneRec.built_in_menu()
+                                                    # Set the address for interfacing to the phonebook database   
+                pbFilePath = user.uDBRootPath[0] + ':\\PhoneBookSystem\\' + str(user.userInfo.userID) + ".pb"   
+                uPhoneBK = pb.phoneBk(pbFilePath)   # Connect to the PB database and assign properties to the PB class
+                uPhoneBK.built_in_menu()            # Enter PB menu
 
 
             if(ip == '2'):
