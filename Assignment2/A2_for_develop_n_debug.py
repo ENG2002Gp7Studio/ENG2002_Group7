@@ -20,16 +20,16 @@ def main():
         
         while(True):
 
-            year, month, day, hour, minite, second = pb.phoneBk.time_split_str(pb.phoneBk, datetime.datetime.now())
+            timeList = pb.phoneBk.time_split_str(pb.phoneBk, datetime.datetime.now())
 
-            if(0 < int(hour) <= 5):
-                greeting = ""
-            if(5 < int(hour) <= 12):
-                greeting = ""
-            if(12 < int(hour) <= 17):
-                greeting = ""
-            if(17 < int(hour) <= 24):
-                greeting = ""
+            if(0 <= int(timeList[3]) <= 5):
+                greeting = "Good morning"
+            if(5 < int(timeList[3]) <= 12):
+                greeting = "Good morning"
+            if(12 < int(timeList[3]) <= 17):
+                greeting = "Good afternoon"
+            if(17 < int(timeList[3]) <= 23):
+                greeting = "Good evening"
 
             while(True):
                 os.system("cls")
@@ -94,6 +94,11 @@ def main():
 
             if(ip == '3'):
                 user.user_log_out()
+                os.system("cls")
+                print(">>>>>>>>>>>>>>>>>>>>")
+                print("  Log out success!  ")
+                print(">>>>>>>>>>>>>>>>>>>>\n")
+                os.system("PAUSE")
                 user.built_in_menu()
                 continue
             if(ip == '4'):
