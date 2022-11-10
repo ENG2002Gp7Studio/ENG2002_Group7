@@ -171,6 +171,7 @@ class phoneBk:
                 #if right.element.isalpha() == False and right.element.isdigit() == False:
                 #if element != '.' and element != '@' and element != '_':
                 return False
+            
             return True
     
     # def check_email(self):    
