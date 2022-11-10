@@ -316,7 +316,10 @@ class phoneBk:
     def time_split_str(self, timeStr):
 
         timeStr = str(timeStr)
-        if(len(timeStr) > 15):
+        if(len(timeStr) < 20):
+                timeStr += 'x' * (20 - len(timeStr))
+                
+        if(len(timeStr) > 15):            
             year = timeStr[0: 4]
             month = timeStr[5: 7]
             day = timeStr[8: 10]
