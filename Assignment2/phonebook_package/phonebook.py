@@ -140,9 +140,54 @@ class phoneBk:
     def show_latest_sorted_rec(self, grp):              #Task 1
         pass
 
-    def check_email(self, grp):                         #Task 2
-        pass
+    #NOT DONE                                           #Task 2
+    #Return -1 refers to invalidation, while 0 refers to validization
+    def check_email(email_address):    
+        def check_email1(email_address):
+            # check if there is only one '@'
+            at = 0
+            for element in email_address:
+                if element == '@':
+                    at = at + 1
 
+            if at != 1:
+                return -1
+
+            # Ensure no illegal spacing
+            for element in email_address:
+                if element == ' ':
+                    return -1
+
+            # check '.' after @
+            pos = email_address.find('@')
+            dotcheck = email_address[pos:]
+            if '.' not in dotcheck:
+                return -1
+
+
+            # check if it contains valid characters including 0-9, upper and lower case letters, '.' , '@',and '_'
+            for element in email_address:
+                pos = email_address.find('@')
+                left = email_address[:pos]
+                right = email_address[pos:]
+                if left.element.isalpha() == False and left.element.isdigit() == False:
+                    if right.element.isalpha() == False and right.element.isdigit() == False:
+                        if element != '.' and element != '@' and element != '_':
+                            print("Invalid Email!")
+                            return -1
+            return 0
+        # main
+        email_address = input('Please input your email for verification: ')
+        #check_email(email_address)
+        if check_email1(email_address) == -1:
+            print('Valid Email!')
+        else:
+            print('Invalid Email!')
+
+    
+    
+    
+    
     def show_name_sorted_rec(self, ascending):          #Task 3
                                                             # ascending = 0: Descending
                                                             # ascending = 1: Ascending
