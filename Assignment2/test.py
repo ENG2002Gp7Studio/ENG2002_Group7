@@ -93,16 +93,19 @@ import phonebook_package.phonebook as pb
 # print(a[0].a)
 
 
-class int():
-    def __init__(self, number):
+# class int():
+#     def __init__(self, number):
         
 
-        temp = str(number)
-        temp = temp.split('.')
-        self.a = temp[0]
-        self.b = temp[1]
+#         temp = str(number)
+#         temp = temp.split('.')
+#         self.a = temp[0]
+#         self.b = temp[1]
 
-math = [int(5.3), int(4.2), int(6.8)]
+# math = [int(5.3), int(4.2), int(6.8)]
 
-print(math[0].a)
-print(math[1].b)
+# print(math[0].a)
+# print(math[1].b)
+
+test = [pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646'), pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646')]
+print(test[0].email)
