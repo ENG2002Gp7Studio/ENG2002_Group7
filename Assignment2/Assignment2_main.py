@@ -31,7 +31,7 @@ import user_management_system.user_management_sys as ums
 
 
 def main():
-    user = ums.UserManageSys()  # User initialisation
+    user = ums.UserManageSys()  # User initialisation (Connect to the database and access a certain user)
                                 # The specific database address can be passed into the class, 
                                 #   and then the system will use this address.
                                 # It can also accept UserName and Pwd as parameters. Once checked against the database,
@@ -85,7 +85,8 @@ def main():
                 os.system("cls")
                 print("Please input your original password: \n")
                 oriPwd = input()
-                t1, t2, pwdCheck, t4 = user.user_check(user.userInfo.userID, oriPwd)
+                t1, t2, pwdCheck, t4 = user.user_check(user.userInfo.userID, oriPwd)    # Check the user and password
+                                                                        # Return 0: Access OK, -1: Wrong Pwd, -2: User is not in database, -3: Database path error
                 if(pwdCheck == -1):
                     print("\nWrong Password!\n")
                     os.system("PAUSE")
@@ -107,7 +108,7 @@ def main():
                             os.system("PAUSE")
                         else:
                             break
-                    user.user_database_write(user.userInfo.userName, nd_pwd, True, user.userInfo.userID)
+                    user.user_database_write(user.userInfo.userName, nd_pwd, True, user.userInfo.userID) # Write new data in database
                     os.system("cls")
                     print("Please input your Password:\n\n" + len(st_pwd) * '*')
                     print("\nPlease input your Password again:\n\n" + len(st_pwd) * '*')
@@ -115,11 +116,12 @@ def main():
                     os.system("PAUSE")
 
                 else:
-                    sys.exit("Unknown Error!")
-
+                    sys.exit("Unknown Error!")  # There may be 2 situations: 
+                                                # Database file path is not available; ''
+                                                # The database has been tampered with so that the user information cannot be found during the runtime
 
             if(ip == '3'):
-                user.user_log_out()
+                user.user_log_out() # Log out
                 os.system("cls")
                 print(">>>>>>>>>>>>>>>>>>>>")
                 print("  Log out success!  ")
@@ -128,7 +130,7 @@ def main():
                 user.built_in_menu()
                 continue
             if(ip == '4'):
-                user.exit_show()
+                user.exit_show()    # Exit
                 exit(0)
 
 if __name__ == "__main__":
