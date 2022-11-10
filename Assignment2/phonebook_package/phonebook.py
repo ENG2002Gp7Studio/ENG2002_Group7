@@ -567,9 +567,9 @@ class phoneBk:
                     if('1' <= ip4 <= '5'):
                         break
 
-                if(ip4 == '5'):
-                    continue
-                
+                    if(ip4 == '5'):
+                        continue
+                    
                 if(ip4 == '1'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
@@ -584,7 +584,7 @@ class phoneBk:
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
-                            
+                                
                 if(ip4 == '4'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
@@ -595,9 +595,10 @@ class phoneBk:
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
+                #return invalid
 
                 
-                invalid = self.check_email()
+                #invalid = self.check_email()
                 if len(invalid) == 0:
                     print("No invalid email address is found.")
                 if len(invalid) != 0:
