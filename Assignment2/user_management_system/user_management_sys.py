@@ -63,6 +63,7 @@ class UserManageSys:
                 userID, userName, userStatus, uIndex = self.user_check(ipUserID)    
                                                                                 # -3: File Path not avialable; -2: User not exist; -1: Password Error; 
                                                                                 # 0: Access; 1: User exist
+                                                                                # -4: Temporary no use
                 if(userStatus == -2):    
                     while(True):
                         os.system("cls")
