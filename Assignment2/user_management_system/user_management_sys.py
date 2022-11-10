@@ -308,7 +308,11 @@ class UserManageSys:
             if(userAll == -3):
                 return -3, -3, -3, -3
 
-            if(not(self.ums_encryption(userID) in userAll[0] or self.ums_encryption(userID) in userAll[1])):
+            haveUser = False
+            for a_user in userAll:
+                if(self.ums_encryption(userID) in a_user):
+                    haveUser = True
+            if(not haveUser):
                 return -2, -2, -2, -2
             
             for i in range(0, len(userAll)):
