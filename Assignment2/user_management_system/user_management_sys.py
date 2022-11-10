@@ -63,6 +63,7 @@ class UserManageSys:
                 userID, userName, userStatus, uIndex = self.user_check(ipUserID)    
                                                                                 # -3: File Path not avialable; -2: User not exist; -1: Password Error; 
                                                                                 # 0: Access; 1: User exist
+                                                                                # -4: Temporary no use
                 if(userStatus == -2):    
                     while(True):
                         os.system("cls")
@@ -308,7 +309,11 @@ class UserManageSys:
             if(userAll == -3):
                 return -3, -3, -3, -3
 
-            if(not(self.ums_encryption(userID) in userAll[0] or self.ums_encryption(userID) in userAll[1])):
+            haveUser = False
+            for a_user in userAll:
+                if(self.ums_encryption(userID) in a_user):
+                    haveUser = True
+            if(not haveUser):
                 return -2, -2, -2, -2
             
             for i in range(0, len(userAll)):

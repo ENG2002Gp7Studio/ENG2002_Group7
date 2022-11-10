@@ -26,10 +26,7 @@ class phoneRec:
 
 
         
-        
-        
-
-    
+  
 class phoneBk:
     def __init__(self, filePath, syncing_from_databse = True, phoneRecList = -1):
         self.family = []
@@ -362,7 +359,9 @@ class phoneBk:
 
         timeStr = str(timeStr)
         if(len(timeStr) < 20):
-                timeStr += 'x' * (20 - len(timeStr))
+            if(timeStr[len(timeStr) - 1] == '\n'):
+                timeStr = timeStr[0: len(timeStr) - 1]
+            timeStr += 'x' * (20 - len(timeStr))
                 
         if(len(timeStr) > 15):            
             year = timeStr[0: 4]
@@ -594,13 +593,13 @@ class phoneBk:
                 print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
                                                         phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
         if(grp == 2 or grp == -1):
-            print("\n{}: ".format(self.group[1]))
+            print("\n{}: ".format(self.group[2]))
             print("     Phone Number | Name | Nickname | Email | Last call datetime")
             for phRec in recGrpList[1]:
                 print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
                                                     phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
         if(grp == 3 or grp == -1):
-            print("\n{}: ".format(self.group[1]))
+            print("\n{}: ".format(self.group[3]))
             print("     Phone Number | Name | Nickname | Email | Last call datetime")
             for phRec in recGrpList[2]:
                 print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 

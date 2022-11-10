@@ -1,6 +1,7 @@
 import os
 import datetime
 import user_management_system.user_management_sys as ums
+import phonebook_package.phonebook as pb
 #import phonebook_package.phonebook as pb
 
 # def ums_encryption(ip):
@@ -51,21 +52,21 @@ import user_management_system.user_management_sys as ums
 # rcd = [pb.phoneRec()]
 # pb1 = pb.phoneBk("H:\\test1\\abs\\rec.pb", rcd)
 
-print(datetime.datetime.now())
+# print(datetime.datetime.now())
 
-a = [0, 1, 2, 3]
-b = "0123456"
-print(b[0: 1])
-if(False == 5):
-    print("yes")
+# a = [0, 1, 2, 3]
+# b = "0123456"
+# print(b[0: 1])
+# if(False == 5):
+#     print("yes")
 
-a = open("H:\\test.txt", "w")
-a.write("123456789\nabcdefghi\n987654321\n")
-a.close()
-a = open("H:\\test.txt", "r")
-b = a.readlines()
-a.close()
-print(b)
+# a = open("H:\\test.txt", "w")
+# a.write("123456789\nabcdefghi\n987654321\n")
+# a.close()
+# a = open("H:\\test.txt", "r")
+# b = a.readlines()
+# a.close()
+# print(b)
 # a = open("H:\\test.txt", "r+")
 # a.readline()
 # w = a.readline()
@@ -75,3 +76,33 @@ print(b)
 # a.seek(a.tell() - l)
 # a.write("89")
 # a.close()
+
+# class ABC:
+#     def __init__(self, a, b, c):
+#         self.a = a
+#         self.b = b
+#         self.c = c
+
+# a = int("abc")
+
+# jicheng = ABC(1, 2, 3)
+
+# print(ABC(1, 2, 3).a)
+
+# a = [ABC(1, 2, 3), ABC(4, 5, 6), ABC(7, 8, 9)]
+# print(a[0].a)
+
+
+class int():
+    def __init__(self, number):
+        
+
+        temp = str(number)
+        temp = temp.split('.')
+        self.a = temp[0]
+        self.b = temp[1]
+
+math = [int(5.3), int(4.2), int(6.8)]
+
+print(math[0].a)
+print(math[1].b)
