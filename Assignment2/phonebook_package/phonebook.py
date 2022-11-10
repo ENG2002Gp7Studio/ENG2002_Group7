@@ -25,7 +25,6 @@ class phoneRec:
         self.lastCallDate = lastCallDate
 
 
-        
   
 class phoneBk:
     def __init__(self, filePath, syncing_from_databse = True, phoneRecList = -1):
@@ -142,8 +141,7 @@ class phoneBk:
 
     #NOT DONE                                           #Task 2
     #Return -1 refers to invalidation, while 0 refers to validization
-    def check_email(email_address):    
-        def check_email1(email_address):
+    def verify_one_email(self, email_address):
             # check if there is only one '@'
             at = 0
             for element in email_address:
@@ -151,42 +149,70 @@ class phoneBk:
                     at = at + 1
 
             if at != 1:
-                return -1
+                return False
 
             # Ensure no illegal spacing
             for element in email_address:
                 if element == ' ':
-                    return -1
+                    return False
 
             # check '.' after @
             pos = email_address.find('@')
-            dotcheck = email_address[pos:]
+            dotcheck = email_address[pos+1:] #To ensure that . is not right after @
             if '.' not in dotcheck:
-                return -1
+                return False
 
 
             # check if it contains valid characters including 0-9, upper and lower case letters, '.' , '@',and '_'
-            for element in email_address:
-                pos = email_address.find('@')
-                left = email_address[:pos]
-                right = email_address[pos:]
-                if left.element.isalpha() == False and left.element.isdigit() == False:
-                    if right.element.isalpha() == False and right.element.isdigit() == False:
-                        if element != '.' and element != '@' and element != '_':
-                            print("Invalid Email!")
-                            return -1
-            return 0
-        # main
-        email_address = input('Please input your email for verification: ')
-        #check_email(email_address)
-        if check_email1(email_address) == -1:
-            print('Valid Email!')
-        else:
-            print('Invalid Email!')
+            pos = email_address.find('@')
+            left = email_address[pos-1:pos]
+            #right = email_address[pos:]
+            if left.isalpha() == False and left.isdigit() == False:
+                #if right.element.isalpha() == False and right.element.isdigit() == False:
+                #if element != '.' and element != '@' and element != '_':
+                return False
+            
+            return True
+    
+    # def check_email(self):    
+        
+        # # main
+        # email_address = input('Please input your email for verification: ')
+        # #check_email(email_address)
+        # if verify_one_email(email_address) == -1:
+        #     print('No invalid emails found in this user group.')
+        # else:
+        #     print('Invalid Email!')
 
-    
-    
-    
+        # invalid = []
+        # def verifyfamily():
+        #     for i in range(0, len(self.family)):    
+        #         if (not self.verify_one_email(self.family[i].email)):
+        #             invalid.append(self.family[i])
+        #         return invalid
+        # def verifyfriend():
+        #     for i in range(0, len(self.friend)):    
+        #         if (not self.verify_one_email(self.friend[i].email)):
+        #             invalid.append(self.friend[i])
+        #         return invalid
+        # def verifyjunk():
+        #     for i in range(0, len(self.junk)):    
+        #         if (not self.verify_one_email(self.junk[i].email)):
+        #             invalid.append(self.junk[i])
+        #         return invalid
+        # def verifyall():
+        #     for i in range(0, len(self.family)):    
+        #         if (not self.verify_one_email(self.family[i].email)):
+        #             invalid.append(self.family[i])
+        #     for i in range(0, len(self.friend)):    
+        #         if (not self.verify_one_email(self.friend[i].email)):
+        #             invalid.append(self.friend[i])
+        #     for i in range(0, len(self.junk)):    
+        #         if (not self.verify_one_email(self.junk[i].email)):
+        #             invalid.append(self.junk[i])
+        #     return invalid
+
+  
     
     def show_name_sorted_rec(self, ascending):          #Task 3
                                                             # ascending = 0: Descending
@@ -200,7 +226,6 @@ class phoneBk:
 
 
     def ph_conflict_check(self, phoneNo, group = -1):
-
         group = int(group)                                        
         ph_conflict = False
         if(group == -1):
@@ -525,7 +550,64 @@ class phoneBk:
                 self.show_latest_sorted_rec()
 
             if(ip == '4'):
-                self.check_email()
+                invalid = []
+                while(1):
+                    print("**********************************************************************")
+                    print("*   (Check Email Validity) Please Choose Group:                      *")
+                    print("*                                                                    *")
+                    print("*   1. Family                                                        *")
+                    print("*   2. Friend                                                        *")
+                    print("*   3. Junk                                                          *")
+                    print("*   4. All                                                           *")
+                    print("*   5. Return to menu                                                *")
+                    print("*                                                                    *")
+                    print("**********************************************************************")
+                    
+                    ip4 = 0
+                    ip4 = str(input("\nInput the number and Enter to continue: "))
+                    if('1' <= ip4 <= '5'):
+                        break
+
+                    if(ip4 == '5'):
+                        continue
+                    
+                if(ip4 == '1'):
+                    for i in range(0, len(self.family)):
+                        if (not self.verify_one_email(self.family[i].email)):
+                            invalid.append(self.family[i])
+
+                if(ip4 == '2'):
+                    for i in range(0, len(self.friend)): 
+                        if (not self.verify_one_email(self.friend[i].email)): 
+                            invalid.append(self.friend[i])
+
+                if(ip4 == '3'):
+                    for i in range(0, len(self.junk)): 
+                        if (not self.verify_one_email(self.junk[i].email)): 
+                            invalid.append(self.junk[i])
+                                
+                if(ip4 == '4'):
+                    for i in range(0, len(self.family)):
+                        if (not self.verify_one_email(self.family[i].email)):
+                            invalid.append(self.family[i])
+                    for i in range(0, len(self.friend)): 
+                        if (not self.verify_one_email(self.friend[i].email)): 
+                            invalid.append(self.friend[i])
+                    for i in range(0, len(self.junk)): 
+                        if (not self.verify_one_email(self.junk[i].email)): 
+                            invalid.append(self.junk[i])
+                #return invalid
+
+                
+                #invalid = self.check_email()
+                if len(invalid) == 0:
+                    print("No invalid email address is found.")
+                if len(invalid) != 0:
+                    for i in range (0,len(invalid)):
+                        print("The {}'s email {} is invalid.".format(invalid[i].nickname, invalid[i].email))
+
+                os.system("PAUSE")
+
 
             if(ip == '5'):
                 self.show_name_sorted_rec()

@@ -1,26 +1,71 @@
+#############################################################################################################################
+#
+# Copyright: ENG2002 Group 7
+# Author: QIN Qijun 21101279D
+# Discription: User Management System
+#
+# This module is used to implement user management. It creates a user database for saving usernames, user IDs and passwords, 
+#   and provides execution functions for various operations on the database.
+# The data is stored in a specific storage format provided by the system, and the data information is encrypted.
+# The system also provides external interfaces to directly connect with external databases and applications, 
+#   as well as embedding into programs. It has a high degree of independence.
+#
+#############################################################################################################################
 
 import os
 import sys
 import datetime
 
+##
+# @brief    A class includes userID and userName. Used in UMS
+#
 class UserInfo:
     def __init__(self, userID, userName):
         self.userID = userID
         self.userName = userName
 
-
+##
+# @brief    The main class of the UMS
+#
 class UserManageSys:
-
+    
+    ##
+    # @brief    Initialize the system
+    # 
+    # @param uDBRootPath    The root path of databse. If no address to pass in, the system will search
+    #                       an available root path for the database
+    #
+    # @param userInfo       Used to receive user information from external sources
+    #
+    # @param userPwd        Used to receive user password form external sources
+    #
     def __init__(self, uDBRootPath = -1, userInfo = -1, userPwd = -1):  
                                                 #User system init
-        self.userInfo = userInfo
-        self.userDataBase = []
-        self.uDBDisk = -1
-        self.uDBRootPath = uDBRootPath
-        self.userAccess = False
-        t1, t2, self.sys_status, t3 = self.sys_init(userPwd)
+        self.userInfo = userInfo    # All the information of user store in the type of (class)userInfo
+        self.userDataBase = []      # No use
+        self.uDBDisk = -1           # The root disk of the path of the database
+        self.uDBRootPath = uDBRootPath  # The root path of database
+        self.userAccess = False     # To tell the login status of user
+        t1, t2, self.sys_status, t3 = self.sys_init(userPwd)    # To initialize the system
 
     
+    ##
+    # @brief    Initaialize the system (cont.)
+    # The system will access the database, check user with password and return the userInfo + status
+    # If no root path of database passes in, the system will search an avialable path for database and use built-in menu
+    # If pass in the path of databse without userInfo and pwd, the system will only connect to the databse
+    # If pass in the path and userInfo only, the system will just check whether the user exist
+    # If pass all parameters, the system will execute login function base on the given databse
+    #
+    # @param userPwd    Password form external sources.
+    #
+    # @return
+    #   - userID, userName, sys_status, index
+    #   -- sys_status = 0: User access; 1: User exist, but no pwd to login; -1: Pwd wrong; -2: User not exist; -3: Database cannot find
+    #   -- index: The position line of the user data in database
+    #
+    # @note You don't need to call this function when you initialize. This proccess will finish automatically when using this class
+    #
     def sys_init(self, userPwd = -1):
         
         if(self.uDBRootPath == -1):
