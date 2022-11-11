@@ -32,6 +32,13 @@ class phoneRec:
 
   
 class phoneBk:
+
+    ##
+    # @param    (str)filePath               Databse path
+    # @param    (bool)syncing_from_databse  True: Get sync from the database
+    # @param    (list)phoneRecList          -1:                         Nothing to do
+    #                                       A list of (class)phoneRec:  Add record to 3 groups of list
+    #      
     def __init__(self, filePath, syncing_from_databse = True, phoneRecList = -1):
         self.family = []
         self.friend = []
@@ -48,13 +55,13 @@ class phoneBk:
     def sys_init(self, filePath, syncing_from_databse = True, phoneRecList = -1):
                                                         #0: Everything OK; -1: File not exist; -2: Database Conflict
         
-        if(self.ph_database_access(filePath) == 0):
+        if(self.ph_database_access(filePath) == 0): # database can access
 
-            self.filePath = filePath
-            if(syncing_from_databse):
-                self.ph_syncing_from_database()
+            self.filePath = filePath  # set database path
+            if(syncing_from_databse):           
+                self.ph_syncing_from_database() # True -> Get sync from the database
             if(phoneRecList != -1):
-                self.add_recs(phoneRecList)
+                self.add_recs(phoneRecList)     # Add record to 3 groups of list
             return 0
                 
 
@@ -244,7 +251,7 @@ class phoneBk:
     def ph_conflict_check(self, phoneNo, group = -1):
         group = int(group)                                        
         ph_conflict = False
-        if(group == -1):    # in the databse
+        if(group == -1):    # check in the database
             for phRec in self.family:
                 if(phRec.phoneNo == phoneNo):
                     ph_conflict = True
@@ -255,7 +262,7 @@ class phoneBk:
                 if(phRec.phoneNo == phoneNo):
                     ph_conflict = True
 
-        else:               # in the given group
+        else:               # check in the given group
             ph_database = open(self.filePath, "r")
             while(True):
                 recSour = ph_database.readline()
@@ -286,7 +293,7 @@ class phoneBk:
         phWriteInList = []
         
         for phRec in phRecList:
-            if(self.ph_conflict_check(phRec.phoneNo, phRec.group)):
+            if(self.ph_conflict_check(phRec.phoneNo, phRec.group)): # check conflict
                 phRecConflictList.append(phRec)
             else:
                 phWriteInList.append(phRec)
@@ -336,6 +343,7 @@ class phoneBk:
 
         ph_database = open(self.filePath, "r")
 
+        # clear the 3-group list
         self.family = []
         self.friend = []
         self.junk = []
@@ -343,8 +351,8 @@ class phoneBk:
             recSour = ph_database.readline()
             if(recSour == ""):
                 break
-            recSplit = recSour.split("///")             #Maybe need some encrytion or decryption
-            recSplit[5] = recSplit[5][0: len(recSplit[5]) - 1]
+            recSplit = recSour.split("///")           
+            recSplit[5] = recSplit[5][0: len(recSplit[5]) - 1]  # cancel '\n'
             recTemp = phoneRec(recSplit[0], int(recSplit[1]), recSplit[2], recSplit[3], recSplit[4], recSplit[5])
             self.add_rec(recTemp)
         
@@ -391,7 +399,7 @@ class phoneBk:
 
         databaseList = self.ph_database_read()
         family, friend, junk = self.split_group(databaseList)
-        for i in range(0, len(recList)):
+        for i in range(0, len(recList)):                            # use 3-g list to compare database
             if(recList[i].group == 1 and not recList[i] in family):
                 phRecListHaveNot.append(recList[i])
                 continue
@@ -403,7 +411,7 @@ class phoneBk:
                 continue
 
         family, friend, junk = self.split_group(recList)
-        for i in range(0, len(databaseList)):
+        for i in range(0, len(databaseList)):                       # use database to compare 3-g list
             if(databaseList[i].group == 1 and not databaseList[i] in family):
                 databaseHaveNot.append(recList[i])
                 continue
@@ -427,21 +435,21 @@ class phoneBk:
     #        
     def ph_database_access(self, filePath):
         
-        if(os.path.isfile(filePath)):   
+        if(os.path.isfile(filePath)):   # file exist, return 0
             self.filePath = filePath
             return 0
         
         else:
             filePath_temp = filePath.split("\\")
             fileRootPath = filePath_temp[0]
-            for i in range(1, len(filePath_temp) - 1):
+            for i in range(1, len(filePath_temp) - 1):      # get root path from filePath
                 fileRootPath += "\\" + filePath_temp[i]
 
-            if(not os.path.exists(fileRootPath)):
+            if(not os.path.exists(fileRootPath)):   # create folder use root path
                 os.makedirs(fileRootPath)
             f = open(filePath, "w")
             f.close()
-            if(os.path.isfile(filePath)):
+            if(os.path.isfile(filePath)):   # create file use filePath
                 self.filePath = filePath
                 return 0
             else:
