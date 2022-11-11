@@ -16,8 +16,13 @@ class phoneRec:
 
     rec_type = ["Phone Number", "Group", "Name", "Nickname", "Email", "The last datetime of Phone Call"]
 
+    ##
+    # @brief    Set database fields
+    #
+    # @note     PhoneNo & group is the two Private Keys 
+    #
     def __init__(self, phoneNo, group, name, nickname, email, lastCallDate):
-        self.phoneNo = phoneNo                  # Phone Number & Group is the two Private Keys in the database
+        self.phoneNo = phoneNo 
         self.group = int(group)
         self.name = name
         self.nickname = nickname
@@ -58,9 +63,9 @@ class phoneBk:
             
 
 
-    def add_rec(self, phRec):                      
+    def add_rec(self, phRec):       # add a record only, return a list with an element that cannot add in                
                                                         #group 1-Family 2-Friend "3"-Junk
-        if(self.ph_conflict_check(phRec.phoneNo)):
+        if(self.ph_conflict_check(phRec.phoneNo)):  # Check whether the phRec has exist
             return [phRec]
         if(phRec.group == 1):
             self.family.append(phRec)
@@ -68,13 +73,13 @@ class phoneBk:
             self.friend.append(phRec)
         if(phRec.group == 3):
             self.junk.append(phRec)
-        return []
+        return []   
 
-    def add_recs(self, phRecList):                      
+    def add_recs(self, phRecList):  # add records, return a list of phRec that cannot add in                    
                                                         #group 1-Family 2-Friend 3-Junk
         conflictList = []
         for phRec in phRecList:
-            if(self.ph_conflict_check(phRec.phoneNo)):
+            if(self.ph_conflict_check(phRec.phoneNo)):  # check whether the phRec has exist
                 conflictList.append(phRec)
                 continue
             if(phRec.group == 1):
@@ -84,9 +89,9 @@ class phoneBk:
             if(phRec.group == 3):
                 self.junk.append(phRec)
 
-        return conflictList
+        return conflictList     # return repetitive phRec
 
-    def split_group(self, sourList):
+    def split_group(self, sourList):    # give a list of phRec, split it into 3 group
 
         family = []
         friend = []
@@ -101,7 +106,9 @@ class phoneBk:
 
         return family, friend, junk
 
-    def ph_rec_retrieve(self, recList, phNo, grp = 0):
+
+    def ph_rec_retrieve(self, recList, phNo, grp = 0):  # Search phRec by phone number in the list based on given group
+                                                        # if grp = 0, the function will search all the group
 
         res = []
         for phRec in recList:
@@ -111,7 +118,7 @@ class phoneBk:
         return res
 
 
-    def del_rec(self, phNo, grp):                       #Task 0
+    def del_rec(self, phNo, grp):                       #Task 0, delete a phRec by phone number and given group
         
         grp = int(grp)
         if(grp == 1):
@@ -132,7 +139,7 @@ class phoneBk:
                 return []
             self.junk.remove(phRec[0])
 
-        return [phRec[0]]
+        return [phRec[0]]   # if delete successfully, then return a list of phRec, otherwise return empty list
 
 
 
@@ -223,11 +230,21 @@ class phoneBk:
     
 
 
-
+    ##
+    # @brief    Check for phone number conflicts in the database or in the specified group
+    #
+    # @param    (str)phoneNo        Phone Number
+    # @param    (int)group          -1: check in the database; 1/2/3: check in given group
+    #
+    # @return   True: have conflict; False: have not conflict
+    #
+    # @note     Need to access database successfully before use it if grp = -1. 
+    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath)
+    #
     def ph_conflict_check(self, phoneNo, group = -1):
         group = int(group)                                        
         ph_conflict = False
-        if(group == -1):
+        if(group == -1):    # in the databse
             for phRec in self.family:
                 if(phRec.phoneNo == phoneNo):
                     ph_conflict = True
@@ -238,7 +255,7 @@ class phoneBk:
                 if(phRec.phoneNo == phoneNo):
                     ph_conflict = True
 
-        else:
+        else:               # in the given group
             ph_database = open(self.filePath, "r")
             while(True):
                 recSour = ph_database.readline()
@@ -253,6 +270,16 @@ class phoneBk:
         return ph_conflict
 
 
+    ##
+    # @brief    Write a list of data in the tail of database
+    #
+    # @param    (list)phRecList     a list of (class)phoneRec
+    #
+    # @return   A list of (class)phoneRec that cannot write in database
+    #
+    # @note     Need to access database successfully before use it. 
+    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath)
+    #
     def ph_database_write(self, phRecList):
 
         phRecConflictList = []
@@ -265,13 +292,21 @@ class phoneBk:
                 phWriteInList.append(phRec)
 
         ph_database = open(self.filePath, "a") 
-        for phRec in phWriteInList:
+        for phRec in phWriteInList:                 # Write in database in a spacific format
             ph_database.write(phRec.phoneNo + "///" + str(phRec.group) + "///" + phRec.name + "///" + phRec.nickname + "///" + 
                                 phRec.email + "///" + phRec.lastCallDate + "\n")
         
         ph_database.close()
         return phRecConflictList
 
+    ##
+    # @brief    Read a list of all data in the tail of database
+    # 
+    # @return   A list of (class)phoneRec that cannot write in database
+    #
+    # @note     Need to access database successfully before use it. 
+    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath) 
+    #
     def ph_database_read(self):
 
         ph_database = open(self.filePath, "r")
@@ -288,9 +323,15 @@ class phoneBk:
         return databaseRecList
             
             
-
-
-
+    ##
+    # @brief    Get sync from the database
+    # After using this function, all data in the database will be automatically synchronized to the 3 groups
+    # 
+    # @return   0 = success
+    #
+    # @note     Need to access database successfully before use it. 
+    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath) 
+    #
     def ph_syncing_from_database(self):
 
         ph_database = open(self.filePath, "r")
@@ -310,6 +351,15 @@ class phoneBk:
         ph_database.close()
         return 0
 
+    ##
+    # @brief    Sync to database
+    # After using this function, the data from the 3 groups will overwrite the database
+    # 
+    # @return   0 = success
+    #
+    # @note     Need to access database successfully before use it. 
+    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath) 
+    #
     def ph_syncing_to_database(self):
 
         ph_database = open(self.filePath, "w")
@@ -320,7 +370,20 @@ class phoneBk:
         self.ph_database_write(self.junk)
 
         return 0
-            
+
+    ##
+    # @brief    Compare the difference between 3 group list and database
+    #
+    # @param    (list)recList   A list of (class)phRec for comparison
+    # 
+    # @return   (list)databaseHaveNot, (list)phRecListHaveNot
+    #           - Return two list of (class)phRec
+    #           -- databaseHaveNot:  Data that exists in 3-group lists but not in the database
+    #           -- phRecListHaveNot: Data that exists in the database but not in the three lists
+    #
+    # @note     Need to access database successfully before use it. 
+    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath) 
+    #        
     def compare_database(self, recList):
 
         databaseHaveNot = []
@@ -354,7 +417,14 @@ class phoneBk:
         return databaseHaveNot, phRecListHaveNot
 
 
-
+    ##
+    # @brief    Access database
+    # If the database is valid, access it; if not, create a new database; if it cannot be created, return an error value
+    #
+    # @param    (str)filePath   The path of the database
+    # 
+    # @return   0: Access; -1: File not exist
+    #        
     def ph_database_access(self, filePath):
         
         if(os.path.isfile(filePath)):   
@@ -379,7 +449,9 @@ class phoneBk:
     
 
 
-    def time_split_str(self, timeStr):
+    def time_split_str(self, timeStr):  
+                                        # e.g. 20221111120345 -> [2022, 11, 11, 12, 03, 45]
+                                        # or 2022-11-11 12:03:45 -> [2022, 11, 11, 12, 03, 45]
 
         timeStr = str(timeStr)
         if(len(timeStr) < 20):
@@ -407,7 +479,8 @@ class phoneBk:
 
 
     def time_combine(self, timeList, mode = 1):
-
+                                                # e.g. [2022, 11, 11, 12, 03, 45] -> 20221111120345         (mode = 1)
+                                                #                              or -> 2022-11-11 12:03:45    (mode = 2)
         if(mode == 1):
             return timeList[0] + timeList[1] + timeList[2] + timeList[3] + timeList[4] + timeList[5]
         if(mode == 2):
