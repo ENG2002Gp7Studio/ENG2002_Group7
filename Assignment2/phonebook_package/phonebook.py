@@ -139,7 +139,7 @@ class phoneBk:
     def show_latest_sorted_rec(self, grp):              #Task 1
         pass
 
-    #NOT DONE                                           #Task 2
+                                                        #Task 2
     #Return -1 refers to invalidation, while 0 refers to validization
     def verify_one_email(self, email_address):
             # check if there is only one '@'
@@ -551,7 +551,7 @@ class phoneBk:
 
             if(ip == '4'):
                 invalid = []
-                while(1):
+                while(1): #To loop the menu and print the menu
                     print("**********************************************************************")
                     print("*   (Check Email Validity) Please Choose Group:                      *")
                     print("*                                                                    *")
@@ -565,12 +565,13 @@ class phoneBk:
                     
                     ip4 = 0
                     ip4 = str(input("\nInput the number and Enter to continue: "))
-                    if('1' <= ip4 <= '5'):
+                    if('1' <= ip4 <= '5'): #Break the loop if the input number meets the requirement
                         break
 
                     if(ip4 == '5'):
                         continue
                     
+                #Execute different programs as per the number input
                 if(ip4 == '1'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
