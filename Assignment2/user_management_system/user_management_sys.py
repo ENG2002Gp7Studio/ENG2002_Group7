@@ -307,12 +307,12 @@ class UserManageSys:
     #  
     def user_sign_up(self, ipUserName, userPwd, ipUserID = False):
 
-        self.user_log_out()
-        userID, userName, userSataus, uIndex = self.user_check(ipUserName) 
-        if(userSataus == 1):
+        self.user_log_out()                     
+        userID, userName, userSataus, uIndex = self.user_check(ipUserName)  # Check whether the user has exist
+        if(userSataus == 1):                        # If exist, then return the exist user
             self.sys_status = 1
             return userID, userName, 1, uIndex
-        if(userSataus == -2):
+        if(userSataus == -2):                       # If not exist, then write in new user data and return the this user
             a = self.user_database_write(ipUserName, userPwd, False, ipUserID)
             self.userInfo = UserInfo(ipUserID, ipUserName)
             self.userAccess = True
@@ -335,13 +335,13 @@ class UserManageSys:
     #   -- Discription is at line 64
     #  
     def user_log_in(self, ipUserName, userPwd):
-        userID, userName, userSataus, uIndex = self.user_check(ipUserName, userPwd)
-        if(userSataus == 0):
+        userID, userName, userSataus, uIndex = self.user_check(ipUserName, userPwd) # Check whether the pwd is correct
+        if(userSataus == 0):                            # If correct, then login
             self.userInfo = UserInfo(userID, userName)
             self.userAccess = True
             self.sys_status = 0
             return userID, userName, userSataus, uIndex
-        else:
+        else:                                           # If wrong, return the wrong value
             self.sys_status = userSataus
             return userID, userName, userSataus, uIndex
 
@@ -387,16 +387,16 @@ class UserManageSys:
     #
     def user_check(self, userID, userPwd = -1):
         
-        userAll = self.user_database_read()
-        if(userPwd == -1):
+        userAll = self.user_database_read()     # Get all database user
+        if(userPwd == -1):          # No pwd param pass in, check whether user is exist only
 
-            if(userAll == -2):
+            if(userAll == -2):              # No user
                 return -2, -2, -2, -2
 
-            if(userAll == -3):
+            if(userAll == -3):              # Database cannot connect
                 return -3, -3, -3, -3
             
-            uIndex = 0
+            uIndex = 0 # To record the position line of the user
             for user in userAll:
                 if(self.ums_encryption(userID) in user):
                     return self.ums_decryption(user[0]), self.ums_decryption(user[1]), 1, uIndex
@@ -404,7 +404,7 @@ class UserManageSys:
 
             return -2, -2, -2, -2
 
-        else:
+        else:                       # pwd pass in, also check whether the pwd is correct
 
             if(userAll == -2):
                 return -2, -2, -2, -2
@@ -563,7 +563,17 @@ class UserManageSys:
             return -1
 
    
-
+    ##
+    # @brief    Check or search for file paths
+    # This function is to connect to the database
+    # If no given root path, i.e. (class)UserManageSys.uDBRootPath = -1, the system will ask user to select an available 
+    #   disk and create database files. Each run will automatically look for the files created.
+    # If given root path, this function will check whether this path is available.
+    # This function will run once when initializing the UserManagementSys class
+    #
+    # @return   
+    #   - 0: Database access; -3: Database cannot find or create
+    #  
     def file_location_detect(self):
 
         locationAccess = False
@@ -578,8 +588,8 @@ class UserManageSys:
                return -3
                                  
         
-        fileDisk = 'Z'
-        while(fileDisk >= 'A'):
+        fileDisk = 'Z'                                              # Search from disk Z~A
+        while(fileDisk >= 'A'):                                     
             rootPathTemp = fileDisk + ":\\UserManagementSystem"
             if(os.path.isfile(rootPathTemp + "\\sysInit.check") and 
                 os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
@@ -599,10 +609,10 @@ class UserManageSys:
 
             fileDisk = chr(ord(fileDisk) - 1)
         
-        if(locationAccess):
+        if(locationAccess):                     # If find the database, then accesss
             self.uDBDisk = fileDisk
             self.uDBRootPath = rootPathTemp
-        else:
+        else:                                   # Ask user to input the disk for store the database
             fileDisk = '0'
             print("Is the first time to use UserManagementSystem(UMS)?")
             print("Please input an accessible Disk(A~Z) for storage the UMS Data")
@@ -621,7 +631,9 @@ class UserManageSys:
                 return 0
 
 
-
+    ##
+    # @brief    Functions for name checking, automatic ID generation for easier editing later
+    #
     def user_name_check(self, userName):
         if(2 <= len(userName) <= 32):
             return True
@@ -634,7 +646,15 @@ class UserManageSys:
             userID = userID[0: i] + str(ord(userName[i % len(userName) - 1]) % 10) + userID[i: len(userID)]
         userID += str(int(datetime.datetime.timestamp(datetime.datetime.now())))
         return userID
-        
+    
+    ##
+    # @brief    A very easy encryption and decryption algorithm
+    # This function is to simulate the process of encryption and decryption.
+    #
+    # @param    (str)ip     Source string
+    #
+    # @return   (str)op     Proccessed string
+    #
     def ums_encryption(self, ip):
 
         op = ""
@@ -653,7 +673,13 @@ class UserManageSys:
 
 
 
-
+##
+# @brief    To show the data of the database
+#
+# @param    fileRootPath    The root path of the database
+#
+# @note     For development and debug only
+#
 def show_user_database(fileRootPath):
     if(os.path.isfile(fileRootPath + "\\userDataBase.ums")):
         f = open(fileRootPath + "\\userDataBase.ums", 'r', encoding='utf-8')
@@ -666,5 +692,5 @@ def show_user_database(fileRootPath):
             print(UserManageSys.ums_decryption(UserManageSys, user_enc[0]) + "\t\t||\t\t" + 
                     UserManageSys.ums_decryption(UserManageSys, user_enc[1]) + "\t\t||\t\t" + 
                     UserManageSys.ums_decryption(UserManageSys, user_enc[2]))
-    return 0
+    return -1
 
