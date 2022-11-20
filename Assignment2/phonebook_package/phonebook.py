@@ -66,7 +66,7 @@ class phoneBk:
                 
 
         else:
-            sys.exit("DataBase Cannot Access!")
+            return -1
             
 
 
@@ -185,6 +185,7 @@ class phoneBk:
                 #if right.element.isalpha() == False and right.element.isdigit() == False:
                 #if element != '.' and element != '@' and element != '_':
                 return False
+            
             return True
     
     # def check_email(self):    
@@ -435,7 +436,7 @@ class phoneBk:
     #        
     def ph_database_access(self, filePath):
         
-        if(os.path.isfile(filePath)):   # file exist, return 0
+        if(self.isfile(filePath)):   # file exist, return 0
             self.filePath = filePath
             return 0
         
@@ -447,9 +448,13 @@ class phoneBk:
 
             if(not os.path.exists(fileRootPath)):   # create folder use root path
                 os.makedirs(fileRootPath)
-            f = open(filePath, "w")
+            
+            try:
+                f = open(filePath, "w")
+            except IOError:
+                return -1
             f.close()
-            if(os.path.isfile(filePath)):   # create file use filePath
+            if(self.isfile(filePath)):   # create file use filePath
                 self.filePath = filePath
                 return 0
             else:
@@ -510,6 +515,14 @@ class phoneBk:
             op += chr(ord(ip[i]) - 35409)
 
         return op
+
+    def isfile(self, filePath):
+        try:
+            t_try = open(filePath, 'r')
+        except IOError:
+            return False
+        t_try.close()
+        return True
 
 
 
@@ -648,9 +661,9 @@ class phoneBk:
                     if('1' <= ip4 <= '5'):
                         break
 
-                if(ip4 == '5'):
-                    continue
-                
+                    if(ip4 == '5'):
+                        continue
+                    
                 if(ip4 == '1'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
@@ -665,7 +678,7 @@ class phoneBk:
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
-                            
+                                
                 if(ip4 == '4'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
@@ -676,9 +689,10 @@ class phoneBk:
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
+                #return invalid
 
                 
-                invalid = self.check_email()
+                #invalid = self.check_email()
                 if len(invalid) == 0:
                     print("No invalid email address is found.")
                 if len(invalid) != 0:

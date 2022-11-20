@@ -45,6 +45,8 @@ class UserManageSys:
         self.uDBRootPath = uDBRootPath  # The root path of database
         self.userAccess = False     # To tell the login status of user
         t1, t2, self.sys_status, t3 = self.sys_init(userPwd)    # To initialize the system
+        if(self.sys_status < 0):
+            self.uDBRootPath = self.sys_status
 
     
     ##
@@ -258,7 +260,7 @@ class UserManageSys:
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print("                     Login in success!                         ")
         print("---------------------------------------------------------------")
-        print("Login in Date: {}".format(datetime.datetime.now()))
+        print("Login in Date: \t{}".format(datetime.datetime.now()))
         print("User ID: \t{}".format(userID))
         print("User Name: \t{}".format(userName))
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
@@ -549,7 +551,7 @@ class UserManageSys:
         f_temp = open(uDBRootPath + "\\userDataBase.ums", 'w')
         f_temp.close()
 
-        if(os.path.isfile(uDBRootPath + "\\sysInit.check")):
+        if(self.isfile(uDBRootPath + "\\sysInit.check")):
             self.uDBDisk = uDBRootPath[0]
             self.uDBRootPath = uDBRootPath
             if(userImport != -1):
@@ -579,8 +581,8 @@ class UserManageSys:
         locationAccess = False
         
         if(self.uDBRootPath != -1):
-            if(os.path.isfile(self.uDBRootPath + "\\sysInit.Check") and
-               os.path.isfile(self.uDBRootPath + "\\userDataBase.ums")):
+            if(self.isfile(self.uDBRootPath + "\\sysInit.Check") and
+               self.isfile(self.uDBRootPath + "\\userDataBase.ums")):
                self.uDBDisk = self.uDBRootPath[0]
                locationAccess = True
                return 0
@@ -591,16 +593,16 @@ class UserManageSys:
         fileDisk = 'Z'                                              # Search from disk Z~A
         while(fileDisk >= 'A'):                                     
             rootPathTemp = fileDisk + ":\\UserManagementSystem"
-            if(os.path.isfile(rootPathTemp + "\\sysInit.check") and 
-                os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
+            if(self.isfile(rootPathTemp + "\\sysInit.check") and 
+                self.isfile(rootPathTemp + "\\userDataBase.ums")):
                 locationAccess = True
                 break
-            if(os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
+            if(self.isfile(rootPathTemp + "\\userDataBase.ums")):
                 f_temp = open(rootPathTemp + "\\sysInit.check", "w")
                 f_temp.close()
                 locationAccess = True
                 break
-            if(os.path.isfile(rootPathTemp + "\\sysInit.check")):
+            if(self.isfile(rootPathTemp + "\\sysInit.check")):
                 f_temp = open(rootPathTemp + "\\userDataBase.ums", "w")
                 f_temp.close()
                 self.uDBDisk = fileDisk
@@ -630,6 +632,18 @@ class UserManageSys:
             else:
                 return 0
 
+    ##
+    # @brief    Check whether the file path is exist
+    #
+    # @param    filePath    file path
+    #
+    def isfile(self, filePath):
+        try:
+            t_try = open(filePath, 'r')
+        except IOError:
+            return False
+        t_try.close()
+        return True
 
     ##
     # @brief    Functions for name checking, automatic ID generation for easier editing later
@@ -681,7 +695,7 @@ class UserManageSys:
 # @note     For development and debug only
 #
 def show_user_database(fileRootPath):
-    if(os.path.isfile(fileRootPath + "\\userDataBase.ums")):
+    if(UserManageSys.isfile(fileRootPath + "\\userDataBase.ums")):
         f = open(fileRootPath + "\\userDataBase.ums", 'r', encoding='utf-8')
         while(True):
             user_sour = f.readline()
