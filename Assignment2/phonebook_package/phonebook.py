@@ -66,7 +66,7 @@ class phoneBk:
                 
 
         else:
-            sys.exit("DataBase Cannot Access!")
+            return -1
             
 
 
@@ -436,7 +436,7 @@ class phoneBk:
     #        
     def ph_database_access(self, filePath):
         
-        if(os.path.isfile(filePath)):   # file exist, return 0
+        if(self.isfile(filePath)):   # file exist, return 0
             self.filePath = filePath
             return 0
         
@@ -448,9 +448,13 @@ class phoneBk:
 
             if(not os.path.exists(fileRootPath)):   # create folder use root path
                 os.makedirs(fileRootPath)
-            f = open(filePath, "w")
+            
+            try:
+                f = open(filePath, "w")
+            except IOError:
+                return -1
             f.close()
-            if(os.path.isfile(filePath)):   # create file use filePath
+            if(self.isfile(filePath)):   # create file use filePath
                 self.filePath = filePath
                 return 0
             else:
@@ -511,6 +515,14 @@ class phoneBk:
             op += chr(ord(ip[i]) - 35409)
 
         return op
+
+    def isfile(self, filePath):
+        try:
+            t_try = open(filePath, 'r')
+        except IOError:
+            return False
+        t_try.close()
+        return True
 
 
 

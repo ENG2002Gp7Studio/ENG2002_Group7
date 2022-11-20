@@ -78,6 +78,9 @@ def main():
                                                     # Set the address for interfacing to the phonebook database   
                 pbFilePath = user.uDBRootPath[0] + ':\\PhoneBookSystem\\' + str(user.userInfo.userID) + ".pb"   
                 uPhoneBK = pb.phoneBk(pbFilePath)   # Connect to the PB database and assign properties to the PB class
+                if(uPhoneBK.ph_status == -1):
+                    print("Database cannot access!")
+                    exit(-1)
                 uPhoneBK.built_in_menu()            # Enter PB menu
 
 
