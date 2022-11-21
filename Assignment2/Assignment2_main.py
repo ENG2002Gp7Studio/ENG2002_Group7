@@ -70,7 +70,8 @@ def main():
                 print("*                                                                    *")
                 print("**********************************************************************")
 
-                ip = str(input("\nInput the number and Enter to continue: "))
+                ip = str(input("\nInput the number and Enter to continue: ")) + '0'
+                ip = ip[0]
                 if('1' <= ip <= '4'):
                     break
             

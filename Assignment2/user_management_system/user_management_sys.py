@@ -98,7 +98,8 @@ class UserManageSys:
             print("*                                                                    *")
             print("**********************************************************************")
 
-            ip = str(input("\nInput the number and Enter to continue: "))
+            ip = str(input("\nInput the number and Enter to continue: ")) + '0'
+            ip = ip[0]
             if('1' <= ip <= '3'):
                 break
 
@@ -121,7 +122,8 @@ class UserManageSys:
                         print("2. Change User")
                         print("3. Exit")
                         print("**********************************************************************")
-                        ip = str(input("Input the number and Enter to continue: "))
+                        ip = str(input("Input the number and Enter to continue: ")) + '0'
+                        ip = ip[0]
                         if('1' <= ip <= '3'):
                             break
 

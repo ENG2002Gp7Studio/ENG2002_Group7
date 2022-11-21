@@ -2,11 +2,13 @@
 #   This module is developed by ENG2002-Group7                                   
 #   
 #   Collaborators for tasks:
-#       Task 0: 
-#       Task 1: 
-#       Task 2: 
-#       Task 3: 
-#       Task 4: 
+#       Task 0: QIN Qijun
+#       Task 1: QIN Qijun
+#       Task 2: LIN Ju
+#       Task 3: NI Rouheng + QIN QIjun
+#       Task 4: QIN Qijun
+#       Program structure and database constructor: QIN Qijun
+#       
 #####################################################################################
 
 import os
@@ -44,7 +46,7 @@ class phoneBk:
         self.friend = []
         self.junk = []
 
-        self.group = [-1, "Family", "Friend", "Junk"]   #group 1-Family 2-Friend 3-Junk
+        self.group = [-1, "Family", "Friend", "Junk", "All"]   #group 1-Family 2-Friend 3-Junk
         self.filePath = -1
  
 
@@ -72,7 +74,7 @@ class phoneBk:
 
     def add_rec(self, phRec):       # add a record only, return a list with an element that cannot add in                
                                                         #group 1-Family 2-Friend "3"-Junk
-        if(self.ph_conflict_check(phRec.phoneNo)):  # Check whether the phRec has exist
+        if(self.ph_conflict_check(phRec.phoneNo, phRec.group)):  # Check whether the phRec has exist
             return [phRec]
         if(phRec.group == 1):
             self.family.append(phRec)
@@ -86,7 +88,7 @@ class phoneBk:
                                                         #group 1-Family 2-Friend 3-Junk
         conflictList = []
         for phRec in phRecList:
-            if(self.ph_conflict_check(phRec.phoneNo)):  # check whether the phRec has exist
+            if(self.ph_conflict_check(phRec.phoneNo, phRec.group)):  # check whether the phRec has exist
                 conflictList.append(phRec)
                 continue
             if(phRec.group == 1):
@@ -150,8 +152,32 @@ class phoneBk:
 
 
 
-    def show_latest_sorted_rec(self, grp):              #Task 1
-        pass
+    def latest_sorted_rec(self, phRecList):              #Task 1, show sorted phone records based on last-call datetime
+
+        sel_group = []
+        datetimeError = []
+        sorted_group = []
+        for i in range(len(phRecList)):
+            t = phRecList[i]
+            sorted_group.append(phoneRec(t.phoneNo, t.group, t.name, t.nickname, t.email, t.lastCallDate))
+
+        for i in range(0, len(phRecList)):
+            tempList = phRecList[i]
+            tempList.lastCallDate = tempList.lastCallDate + '0' * 16    #
+            tempList.lastCallDate = tempList.lastCallDate[:16]          # To make the length of datatime the same
+            if(tempList.lastCallDate.isnumeric()):                      #
+                sel_group.append(tempList)                              #
+            else:
+                datetimeError.append(phRecList[i].lastCallDate.isnumeric())
+
+        if(len(phRecList) > 0):
+            for i in range(1, len(sorted_group)):               # Bubble Sort, compare last call datatime
+                for j in range(0, len(sorted_group) - i):
+                    if sel_group[j].lastCallDate < sel_group[j + 1].lastCallDate:
+                        sorted_group[j], sorted_group[j + 1] = sorted_group[j + 1], sorted_group[j] # Source data
+                        sel_group[j], sel_group[j + 1] = sel_group[j + 1], sel_group[j]             # Edited data for comparing
+            
+        return sorted_group + datetimeError
 
     #NOT DONE                                           #Task 2
     #Return -1 refers to invalidation, while 0 refers to validization
@@ -228,49 +254,75 @@ class phoneBk:
 
   
     
-    def show_name_sorted_rec(self, ascending):          #Task 3
-                                                            # ascending = 0: Descending
-                                                            # ascending = 1: Ascending
-        pass                
+    def nickname_sorted_rec(self, phRecList, ascending = 1):          #Task 3
+                                                            # ascending = 1: Descending
+                                                            # ascending = 2: Ascending
+        sorted_group = phRecList
 
-    def copy_to_group(self, PhNo, grp):                 #Task 4
-        pass
+        if(ascending == 2):
+            sort_mode = -1
+        else:
+            sort_mode = 1
+
+        if(len(phRecList) > 0):
+            for i in range(1, len(sorted_group)):               # Bubble Sort, compare nickname
+                for j in range(0, len(sorted_group) - i):
+                    if(self.str_compare(sorted_group[j].nickname, sorted_group[j + 1].nickname) * sort_mode > 0):
+                        sorted_group[j], sorted_group[j + 1] = sorted_group[j + 1], sorted_group[j]     
+
+        return sorted_group 
+
+
+    def copy_to_group(self, phNo, ori_grp, tar_grp):             #Task 4, copies the phone record of a user-input phone number from 
+                                                                    # one user-given group to another user-given group.
+
+        all_group = [-1, self.family, self.friend, self.junk]
+        phRec = self.ph_rec_retrieve(all_group[ori_grp], phNo)
+        if(len(phRec) == 0):
+            return [-1]
+        phRec[0].group = tar_grp
+        return self.add_rec(phRec[0])
+
     
 
 
     ##
     # @brief    Check for phone number conflicts in the database or in the specified group
     #
-    # @param    (str)phoneNo        Phone Number
-    # @param    (int)group          -1: check in the database; 1/2/3: check in given group
+    # @param    (str)phoneNo            Phone Number
+    # @param    (int)group              -1: check in the database; 1/2/3: check in given group
+    # @param    (int)check_in_database  True: Check conflict in database; False: Check conflict in given group
     #
     # @return   True: have conflict; False: have not conflict
     #
-    # @note     Need to access database successfully before use it if grp = -1. 
-    #               To reset the database path, use (class)phoneBK.ph_databse_access(filePath)
+    # @note     Need to access database successfully before use it if check_in_database = True. 
+    #               To reset the database path, use phoneBK.ph_databse_access(filePath)
     #
-    def ph_conflict_check(self, phoneNo, group = -1):
-        group = int(group)                                        
+    def ph_conflict_check(self, phoneNo, grp, check_in_database = False):
+        grp = int(grp)                                        
         ph_conflict = False
-        if(group == -1):    # check in the database
-            for phRec in self.family:
-                if(phRec.phoneNo == phoneNo):
-                    ph_conflict = True
-            for phRec in self.friend:
-                if(phRec.phoneNo == phoneNo):
-                    ph_conflict = True
-            for phRec in self.junk:
-                if(phRec.phoneNo == phoneNo):
-                    ph_conflict = True
+        if(not check_in_database):      # check in the given group
+            if(grp == 1):
+                for phRec in self.family:
+                    if(phRec.phoneNo == phoneNo):
+                        ph_conflict = True
+            if(grp == 2):
+                for phRec in self.friend:
+                    if(phRec.phoneNo == phoneNo):
+                        ph_conflict = True
+            if(grp == 3):
+                for phRec in self.junk:
+                    if(phRec.phoneNo == phoneNo):
+                        ph_conflict = True
 
-        else:               # check in the given group
+        else:                           # check in the database
             ph_database = open(self.filePath, "r")
             while(True):
                 recSour = ph_database.readline()
                 if(recSour == ""):
                     break
                 recSplit = recSour.split("///") 
-                if(recSplit[0] == phoneNo and recSplit[1] == group):
+                if(recSplit[0] == phoneNo and recSplit[1] == grp):
                     ph_conflict = True
                     break
             ph_database.close()
@@ -294,7 +346,7 @@ class phoneBk:
         phWriteInList = []
         
         for phRec in phRecList:
-            if(self.ph_conflict_check(phRec.phoneNo, phRec.group)): # check conflict
+            if(self.ph_conflict_check(phRec.phoneNo, phRec.group, True)): # check conflict
                 phRecConflictList.append(phRec)
             else:
                 phWriteInList.append(phRec)
@@ -472,7 +524,7 @@ class phoneBk:
                 timeStr = timeStr[0: len(timeStr) - 1]
             timeStr += 'x' * (20 - len(timeStr))
                 
-        if(len(timeStr) > 15):            
+        if(len(timeStr.split('-')) > 1):            
             year = timeStr[0: 4]
             month = timeStr[5: 7]
             day = timeStr[8: 10]
@@ -516,7 +568,15 @@ class phoneBk:
 
         return op
 
-    def isfile(self, filePath):
+    def str_compare(self, str1, str2):
+        if(str1 < str2):
+            return -1
+        if(str1 == str2):
+            return 0
+        if(str1 > str2):
+            return 1
+
+    def isfile(self, filePath):             # Check whether the file can access
         try:
             t_try = open(filePath, 'r')
         except IOError:
@@ -547,7 +607,8 @@ class phoneBk:
                 print("*                                                                    *")
                 print("**********************************************************************")
 
-                ip = str(input("\nInput the number and Enter to continue: "))
+                ip = str(input("\nInput the number and Enter to continue: ")) + '0'
+                ip = ip[0]
                 if('1' <= ip <= '8'):
                     break
 
@@ -565,7 +626,8 @@ class phoneBk:
                     print("*                                                                    *")
                     print("**********************************************************************")
 
-                    ip1 = str(input("\nInput the number and Enter to continue: "))
+                    ip1 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip1 = ip1[0]
                     if('1' <= ip <= '4'):
                         break
                 
@@ -578,7 +640,7 @@ class phoneBk:
                     if(i == len(phoneRec.rec_type) - 1):
                         print("\nPlease input {}: ".format(phoneRec.rec_type[i]))
                         print("(Format: year + month + day + hour + minute + second)")
-                        print("(E.g.: 9/Nov/2022 23:01 --> 200211092301)\n")
+                        print("(E.g.: 9/Nov/2022 23:01:45 --> 20221109230145)\n")
                         recInput.append(input())
                         break
 
@@ -605,7 +667,7 @@ class phoneBk:
             if(ip == '2'):
                 while(True):
                     os.system("cls")
-                    ip1 = 0
+                    ip2 = 0
                     print("**********************************************************************")
                     print("*   (Delete Record) Please Choose Group                              *")
                     print("*                                                                    *")
@@ -616,18 +678,19 @@ class phoneBk:
                     print("*                                                                    *")
                     print("**********************************************************************")
 
-                    ip1 = str(input("\nInput the number and Enter to continue: "))
-                    if('1' <= ip1 <= '4'):
+                    ip2 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip2 = ip2[0]
+                    if('1' <= ip2 <= '4'):
                         break
 
-                if(ip1 == '4'):
+                if(ip2 == '4'):
                     continue
 
                 os.system("cls")
-                print("Delete From Group - {}".format(self.group[int(ip)]))
+                print("Delete From Group - {}".format(self.group[int(ip2)]))
                 print("\nPlease input the phone number:\n")
                 phNo = input()
-                delRec = self.del_rec(phNo, int(ip1))
+                delRec = self.del_rec(phNo, int(ip2))
                 if(delRec == []):
                     print("\nFailed to delete. The record is not exist!\n")
                     os.system("PAUSE")
@@ -640,7 +703,42 @@ class phoneBk:
                     os.system("PAUSE")
 
             if(ip == '3'):
-                self.show_latest_sorted_rec()
+                while(1):
+                    os.system("cls")
+                    ip3 = 0
+                    print("**********************************************************************************")
+                    print("*   (Show sorted phone records (last-call datetime)) Please Choose Group:        *")
+                    print("*                                                                                *")
+                    print("*   1. Family                                                                    *")
+                    print("*   2. Friend                                                                    *")
+                    print("*   3. Junk                                                                      *")
+                    print("*   4. All                                                                       *")
+                    print("*   5. Return to menu                                                            *")
+                    print("*                                                                                *")
+                    print("**********************************************************************************")
+                    
+                    
+                    ip3 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip3 = ip3[0]
+                    if('1' <= ip3 <= '5'):
+                        break
+                if(ip3 == '5'):
+                    continue
+                
+                all_group = [-1, self.family, self.friend, self.junk]
+                if('1' <= ip3 <= '3'):
+                    sorted_group = self.latest_sorted_rec(all_group[int(ip3)])
+                if(ip3 == '4'):
+                    sorted_group = self.latest_sorted_rec(all_group[1] + all_group[2] + all_group[3])
+
+                print("\nPhone record of group {} sorted by call datetime: \n".format(self.group[int(ip3)]))
+                print("     Phone Number | Name | Nickname | Email | Last call datetime")
+                for phRec in sorted_group:
+                    self.print_one_rec(phRec)
+                
+                print()
+                os.system("PAUSE")
+
 
             if(ip == '4'):
                 invalid = []
@@ -657,12 +755,13 @@ class phoneBk:
                     print("**********************************************************************")
                     
                     ip4 = 0
-                    ip4 = str(input("\nInput the number and Enter to continue: "))
+                    ip4 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip4 = ip4[0]
                     if('1' <= ip4 <= '5'):
                         break
 
-                    if(ip4 == '5'):
-                        continue
+                if(ip4 == '5'):
+                    continue
                     
                 if(ip4 == '1'):
                     for i in range(0, len(self.family)):
@@ -697,16 +796,146 @@ class phoneBk:
                     print("No invalid email address is found.")
                 if len(invalid) != 0:
                     for i in range (0,len(invalid)):
-                        print("The {}'s email {} is invalid.".format(invalid[i].nickname, invalid[i].email))
+                        print("The {}'s email '{}' is invalid.".format(invalid[i].nickname, invalid[i].email))
 
                 os.system("PAUSE")
 
 
             if(ip == '5'):
-                self.show_name_sorted_rec()
+                while(1):
+                    os.system("cls")
+                    ip5 = 0
+                    print("**************************************************************************")
+                    print("*   (Show sorted phone records (nickname)) Please Choose Group:          *")
+                    print("*                                                                        *")
+                    print("*   1. Family                                                            *")
+                    print("*   2. Friend                                                            *")
+                    print("*   3. Junk                                                              *")
+                    print("*   4. All                                                               *")
+                    print("*   5. Return to menu                                                    *")
+                    print("*                                                                        *")
+                    print("**************************************************************************")
+                    
+                    
+                    ip5 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip5 = ip5[0]
+                    if('1' <= ip5 <= '5'):
+                        break
+
+                if(ip5 == '5'):
+                    continue
+
+
+                while(1):
+                    os.system("cls")
+                    sort_mode = 0
+                    print("**************************************")
+                    print("*   Sort by:                         *")
+                    print("*                                    *")
+                    print("*   1. Ascending                     *")
+                    print("*   2. Descending                    *")
+                    print("*                                    *")
+                    print("**************************************")
+                    
+                    
+                    sort_mode = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    sort_mode = sort_mode[0]
+                    if('1' <= sort_mode <= '2'):
+                        break
+                
+            
+                all_group = [-1, self.family, self.friend, self.junk]
+                if('1' <= ip5 <= '3'):
+                    sorted_group = self.nickname_sorted_rec(all_group[int(ip5)], int(sort_mode))
+                if(ip5 == '4'):
+                    sorted_group = self.nickname_sorted_rec(all_group[1] + all_group[2] + all_group[3], int(sort_mode))
+
+                print("\nPhone record of group {} sorted by nickname: \n".format(self.group[int(ip5)]))
+                print("     Nickname | Name | Phone Number | Email | Last call datetime")
+                for phRec in sorted_group:
+                    print("     {} | {} | {} | {} | {}".format(phRec.nickname, phRec.name, phRec.phoneNo, 
+                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
+                
+                print()
+                os.system("PAUSE")
+                
 
             if(ip == '6'):
-                self.copy_to_group()
+                while(1):
+                    os.system("cls")
+                    ip6 = 0
+                    print("**************************************************************************")
+                    print("*   (Copy phone record to group...) Please Choose Group:                 *")
+                    print("*                                                                        *")
+                    print("*   1. Family                                                            *")
+                    print("*   2. Friend                                                            *")
+                    print("*   3. Junk                                                              *")
+                    print("*   4. Return to menu                                                    *")
+                    print("*                                                                        *")
+                    print("**************************************************************************")
+                    
+                    
+                    ip6 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip6 = ip6[0]
+                    if('1' <= ip6 <= '4'):
+                        break
+
+                if(ip6 == '4'):
+                    continue
+
+                os.system("cls")
+
+                print("(Copy phone record to group...) Please input phone number (input '#' to cancel):\n")
+                ip_phNo = input()
+                if(ip_phNo == '#'):
+                    continue
+                all_group = [-1, self.family, self.friend, self.junk]
+                ori_rec = self.ph_rec_retrieve(all_group[int(ip6)], ip_phNo)
+                if(ori_rec == []):
+                    print("\nCannot find phone record '{}' in group {}\n".format(ip_phNo, self.group[int(ip6)]))
+                    os.system("PAUSE")
+                    continue
+                
+                while(1):
+                    os.system("cls")
+                    ip6a = 0
+                    print("**********************************************************************************")
+                    print("     Phone Number | Name | Nickname | Email | Last call datetime")
+                    self.print_one_rec(ori_rec[0])
+                    print("*                                                                                *")
+                    print("*   (Copy phone record to group...) Copy the record to group...:                 *")
+                    print("*                                                                                *")
+                    print("*   1. Family                                                                    *")
+                    print("*   2. Friend                                                                    *")
+                    print("*   3. Junk                                                                      *")
+                    print("*   4. Cancel                                                                    *")
+                    print("*                                                                                *")
+                    print("**********************************************************************************")
+                    
+                    
+                    ip6a = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip6a = ip6a[0]
+                    if('1' <= ip6a <= '4'):
+                        break
+
+                if(ip6a == '4'):
+                    continue
+                
+                conflictList = self.copy_to_group(ip_phNo, int(ip6), int(ip6a))
+                if(conflictList == [-1]):
+                    print("\nCannot find phone record '{}' in group {}\n".format(ip_phNo, self.group[int(ip6)]))
+                    os.system("PAUSE")
+                elif(conflictList == []):
+                    self.ph_syncing_to_database()
+                    print("\nCopy Successfully!\n")
+                    os.system("PAUSE")
+                else:
+                    print("The phone record\n")
+                    print("     Phone Number | Name | Nickname | Email | Last call datetime")
+                    self.print_one_rec(conflictList[0])
+                    print("\nhas exist in group {}\n".format(self.group[int(ip6a)]))
+                    os.system("PAUSE")
+
 
             if(ip == '7'):
                 os.system("cls")
@@ -715,7 +944,8 @@ class phoneBk:
                     print("1. Current variable record")
                     print("2. Database")
                     print("3. Return to menu")
-                    ip1 = str(input("\nInput the number and Enter to continue: "))
+                    ip1 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip1 = ip1[0]
                     if('1' <= ip1 <= '3'):
                         break
                 if(ip1 == '3'):
@@ -732,7 +962,8 @@ class phoneBk:
                     print("3. Junk")
                     print("4. All")
                     print("5. Return to menu")
-                    ip1 = str(input("\nInput the number and Enter to continue: "))
+                    ip1 = str(input("\nInput the number and Enter to continue: ")) + '0'
+                    ip1 = ip1[0]
                     if('1' <= ip1 <= '5'):
                         break
                 if(ip1 == '5'):
@@ -749,7 +980,9 @@ class phoneBk:
                 return 0
 
 
-
+    def print_one_rec(self, phRec):
+        print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
+                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
 
     def show_phone_rec(self, grp = -1, fromDatabase = False):
         if(fromDatabase):
