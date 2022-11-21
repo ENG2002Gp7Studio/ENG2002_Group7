@@ -120,12 +120,15 @@ import phonebook_package.phonebook as pb
 # test = [pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646'), pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646')]
 # print(test[0].email)
 
-t = pb.phoneBk("H:kkk.sss")
-print(t.ph_status)
+# t = pb.phoneBk("H:kkk.sss")
+# print(t.ph_status)
 
-t = ums.UserManageSys("H:sss")
-print(t.sys_status)
-
+# t = ums.UserManageSys("H:sss")
+# print(t.sys_status)
+print("012131321313131031201313101030123130".isnumeric())
+a = "sss-sss-sss 123:2465:534"
+a = 'Peter'.upper()
+print('12'>'4')
 
 
 
