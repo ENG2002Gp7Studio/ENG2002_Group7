@@ -166,7 +166,7 @@ class UserManageSys:
 
                     if(ip == '3'):
                         self.exit_show()
-                        sys.exit(0)
+                        sys.exit()
 
                 if(userStatus == 1):    # Find user and ask user to input pwd
 
@@ -190,7 +190,7 @@ class UserManageSys:
                     os.system("cls")
                     print("Input wrong password too many times! Please try again later!")
                     os.system("PAUSE")
-                    sys.exit(0)
+                    sys.exit()
 
                 if(userStatus == -3):       # Database cannot connect
                     return -3, -3, -3, -3
@@ -249,7 +249,7 @@ class UserManageSys:
         if(ip == "3"):
             os.system("cls")
             self.exit_show()
-            sys.exit(0)
+            sys.exit()
 
 
     ##
@@ -624,7 +624,7 @@ class UserManageSys:
             while(not('A' <= fileDisk <= 'Z' or 'a' <= fileDisk <= 'z')):
                 fileDisk = input("Disk(Enter '0' to EXIT): ")
                 if(fileDisk == '0'):
-                    sys.exit(0)
+                    sys.exit()
                 if(not('A' <= fileDisk <= 'Z' or 'a' <= fileDisk <= 'z')):
                     print("Please input an accessible Disk(A~Z) for storage the UMS Data")
 
