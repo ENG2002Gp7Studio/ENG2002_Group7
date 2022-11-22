@@ -170,7 +170,7 @@ class UserManageSys:
 
                 if(userStatus == 1):    # Find user and ask user to input pwd
 
-                    for i in range(3, -1, -1):
+                    for i in range(2, -1, -1):
                         
                         os.system("cls")
                         print("UserName: {}".format(ipUserID))
