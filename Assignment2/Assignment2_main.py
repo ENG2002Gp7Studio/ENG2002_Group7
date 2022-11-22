@@ -81,7 +81,7 @@ def main():
                 uPhoneBK = pb.phoneBk(pbFilePath)   # Connect to the PB database and assign properties to the PB class
                 if(uPhoneBK.ph_status == -1):
                     print("Database cannot access!")
-                    sys.exit(-1)
+                    sys.exit()
                 uPhoneBK.built_in_menu()            # Enter PB menu
 
 
@@ -135,7 +135,7 @@ def main():
                 continue
             if(ip == '4'):
                 user.exit_show()    # Exit
-                sys.exit(0)
+                sys.exit()
 
 if __name__ == "__main__":
     main()
