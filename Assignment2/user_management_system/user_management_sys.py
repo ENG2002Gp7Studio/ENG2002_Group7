@@ -166,7 +166,7 @@ class UserManageSys:
 
                     if(ip == '3'):
                         self.exit_show()
-                        exit(0)
+                        sys.exit(0)
 
                 if(userStatus == 1):    # Find user and ask user to input pwd
 
@@ -190,7 +190,7 @@ class UserManageSys:
                     os.system("cls")
                     print("Input wrong password too many times! Please try again later!")
                     os.system("PAUSE")
-                    exit(0)
+                    sys.exit(0)
 
                 if(userStatus == -3):       # Database cannot connect
                     return -3, -3, -3, -3
@@ -249,7 +249,7 @@ class UserManageSys:
         if(ip == "3"):
             os.system("cls")
             self.exit_show()
-            exit(0)
+            sys.exit(0)
 
 
     ##
