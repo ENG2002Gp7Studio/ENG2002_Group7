@@ -32,12 +32,10 @@ class UserManageSys:
     ##
     # @brief    Initialize the system
     # 
-    # @param uDBRootPath    The root path of databse. If no address to pass in, the system will search
-    #                       an available root path for the database
-    #
-    # @param userInfo       Used to receive user information from external sources
-    #
-    # @param userPwd        Used to receive user password form external sources
+    # @param (str)uDBRootPath   The root path of databse. If no address to pass in, the system will search
+    #                           an available root path for the database
+    # @param (str)userInfo      Used to receive user information from external sources
+    # @param (str)userPwd       Used to receive user password form external sources
     #
     def __init__(self, uDBRootPath = -1, userInfo = -1, userPwd = -1):  
                                                 #User system init
@@ -47,6 +45,8 @@ class UserManageSys:
         self.uDBRootPath = uDBRootPath  # The root path of database
         self.userAccess = False     # To tell the login status of user
         t1, t2, self.sys_status, t3 = self.sys_init(userPwd)    # To initialize the system
+        if(self.sys_status < 0):
+            self.uDBRootPath = self.sys_status
 
     
     ##
@@ -57,7 +57,7 @@ class UserManageSys:
     # If pass in the path and userInfo only, the system will just check whether the user exist
     # If pass all parameters, the system will execute login function base on the given databse
     #
-    # @param userPwd    Password form external sources.
+    # @param (str)userPwd   Password form external sources.
     #
     # @return
     #   - userID, userName, sys_status, index
@@ -78,7 +78,9 @@ class UserManageSys:
             return self.user_check(self.userInfo.userName, userPwd)
 
 
-
+    ##
+    # @brief    defaul menu
+    #
     def built_in_menu(self):
 
         while(self.uDBRootPath == -1):
@@ -96,7 +98,8 @@ class UserManageSys:
             print("*                                                                    *")
             print("**********************************************************************")
 
-            ip = str(input("\nInput the number and Enter to continue: "))
+            ip = str(input("\nInput the number and Enter to continue: ")) + '0'
+            ip = ip[0]
             if('1' <= ip <= '3'):
                 break
 
@@ -109,7 +112,7 @@ class UserManageSys:
                                                                                 # -3: File Path not avialable; -2: User not exist; -1: Password Error; 
                                                                                 # 0: Access; 1: User exist
                                                                                 # -4: Temporary no use
-                if(userStatus == -2):    
+                if(userStatus == -2):       # User did not exist, entry sign up menu
                     while(True):
                         os.system("cls")
                         print("**********************************************************************")
@@ -119,7 +122,8 @@ class UserManageSys:
                         print("2. Change User")
                         print("3. Exit")
                         print("**********************************************************************")
-                        ip = str(input("Input the number and Enter to continue: "))
+                        ip = str(input("Input the number and Enter to continue: ")) + '0'
+                        ip = ip[0]
                         if('1' <= ip <= '3'):
                             break
 
@@ -129,7 +133,7 @@ class UserManageSys:
                             os.system("PAUSE")
                             continue
 
-                        while(True):
+                        while(True):                                # Input new pass word and check it
                             os.system("cls")
                             print("UserName: {}".format(ipUserID))
                             print("Please input your Password:\n")
@@ -146,14 +150,14 @@ class UserManageSys:
                             else:
                                 break
                         
-                        self.user_database_write(ipUserID, nd_pwd)
-                        userID, userName, userStatus, uIndex = self.user_check(ipUserID)
+                        self.user_database_write(ipUserID, nd_pwd)                          # Write in database
+                        userID, userName, userStatus, uIndex = self.user_check(ipUserID)    # Re-check again
                         pwdLen = len(nd_pwd)
                         nd_pwd = 0
-                        self.userInfo = UserInfo(userID, userName)
+                        self.userInfo = UserInfo(userID, userName)      # Save in userInfo
                         self.userAccess = True
 
-                        self.sign_up_show(pwdLen, userID, userName)
+                        self.sign_up_show(pwdLen, userID, userName)     # Display
                         return userID, userName, userStatus, uIndex
 
 
@@ -162,19 +166,19 @@ class UserManageSys:
 
                     if(ip == '3'):
                         self.exit_show()
-                        exit(0)
+                        sys.exit()
 
-                if(userStatus == 1):
+                if(userStatus == 1):    # Find user and ask user to input pwd
 
-                    for i in range(5, -1, -1):
+                    for i in range(2, -1, -1):
                         
                         os.system("cls")
                         print("UserName: {}".format(ipUserID))
                         ipUserPwd = input("Please input password: ")
-                        userID, userName, userStatus, uIndex = self.user_check(ipUserID, ipUserPwd)
+                        userID, userName, userStatus, uIndex = self.user_check(ipUserID, ipUserPwd) # Check pwd
                         pwdLen = len(ipUserPwd)
                         ipUserPwd = 0
-                        if(userStatus == 0):
+                        if(userStatus == 0):    # pwd correct
                             self.userInfo = UserInfo(userID, userName)
                             self.userAccess = True
                             self.log_in_show(pwdLen, userID, userName)
@@ -186,12 +190,12 @@ class UserManageSys:
                     os.system("cls")
                     print("Input wrong password too many times! Please try again later!")
                     os.system("PAUSE")
-                    exit(0)
+                    sys.exit()
 
-                if(userStatus == -3):
+                if(userStatus == -3):       # Database cannot connect
                     return -3, -3, -3, -3
 
-        if(ip == "2"):
+        if(ip == "2"):  # Sign up. The same as ip == '1'
 
             while(True):
                
@@ -203,7 +207,7 @@ class UserManageSys:
                     else:
                         print("\nYour user name is too short or too long (2~32 characters)\nPlease re-input!")
 
-                userID, userName, userStatus, uIndex= self.user_check(ipUserName)    
+                userID, userName, userStatus, uIndex = self.user_check(ipUserName)    
 
                 if(userStatus == -3):
                     return -3, -3, -3, -3
@@ -245,9 +249,12 @@ class UserManageSys:
         if(ip == "3"):
             os.system("cls")
             self.exit_show()
-            exit(0)
+            sys.exit()
 
 
+    ##
+    # @brief    Display sample
+    #
     def log_in_show(self, pwdLen, userID, userName):
         os.system("cls")
         print("UserName: {}".format(userName))
@@ -255,7 +262,7 @@ class UserManageSys:
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print("                     Login in success!                         ")
         print("---------------------------------------------------------------")
-        print("Login in Date: {}".format(datetime.datetime.now()))
+        print("Login in Date: \t{}".format(datetime.datetime.now()))
         print("User ID: \t{}".format(userID))
         print("User Name: \t{}".format(userName))
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
@@ -287,58 +294,113 @@ class UserManageSys:
         os.system("PAUSE")
 
 
-
+    ##
+    # @brief    Sign up function
+    # This function is provided for external call. 
+    # It is no need to call if using built-in menu.
+    # 
+    # @param (str)ipUserName    The new user name for sign up
+    # @param (str)userPwd       The new pwd for sign up
+    # @param (str)ipUserID      The new user ID for sign up. If False, the ID will generate automatically
+    #
+    # @note Need to set (phoneBook).uDBRootPath before use this function
+    # 
+    # @return
+    #   - userID, userName, sys_status, index
+    #   -- Discription is at line 64
+    #  
     def user_sign_up(self, ipUserName, userPwd, ipUserID = False):
 
-        self.user_log_out()
-        userID, userName, userSataus, uIndex = self.user_check(ipUserName) 
-        if(userSataus == 1):
-            self.sys_status = -4
-            return -4, -4, -4, -4
-        if(userSataus == -2):
+        self.user_log_out()                     
+        userID, userName, userSataus, uIndex = self.user_check(ipUserName)  # Check whether the user has exist
+        if(userSataus == 1):                        # If exist, then return the exist user
+            self.sys_status = 1
+            return userID, userName, 1, uIndex
+        if(userSataus == -2):                       # If not exist, then write in new user data and return the this user
             a = self.user_database_write(ipUserName, userPwd, False, ipUserID)
             self.userInfo = UserInfo(ipUserID, ipUserName)
             self.userAccess = True
             self.sys_status = 0
             return userName, userPwd, a, uIndex
         
+
+    ##
+    # @brief    Login function
+    # This function is provided for external call. 
+    # It is no need to call if using built-in menu.
+    #
+    # @param (str)ipUserName    The new user name for sign up
+    # @param (str)userPwd       The new pwd for sign up
+    #
+    # @note Need to set (phoneBook).uDBRootPath before use this function
+    #
+    # @return
+    #   - userID, userName, sys_status, index
+    #   -- Discription is at line 64
+    #  
     def user_log_in(self, ipUserName, userPwd):
-        userID, userName, userSataus, uIndex = self.user_check(ipUserName, userPwd)
-        if(userSataus == 0):
+        userID, userName, userSataus, uIndex = self.user_check(ipUserName, userPwd) # Check whether the pwd is correct
+        if(userSataus == 0):                            # If correct, then login
             self.userInfo = UserInfo(userID, userName)
             self.userAccess = True
             self.sys_status = 0
             return userID, userName, userSataus, uIndex
-        else:
+        else:                                           # If wrong, return the wrong value
             self.sys_status = userSataus
             return userID, userName, userSataus, uIndex
 
+
+    ##
+    # @brief    Logout function
+    # This function is provided for external call. 
+    # It is no need to call if using built-in menu.
+    #
+    # @return 0 = success
+    #
     def user_log_out(self):
         self.userInfo = -1
         self.userAccess = False
         self.sys_status = -2
         return 0
 
+
+    ##
+    # @brief    User delete function
+    # This function is provided for external call. 
+    # It is no need to call if using built-in menu.
+    #
+    # Temporary undeveloped
+    #
     def user_del(self, ipUserName, userPwd):
         userID, userName, userSataus, uIndex = self.user_check(ipUserName, userPwd)
         if(userSataus == 0):
             pass
 
 
-
-
+    ##
+    # @brief    Check whether user 1. is exist; 2. pwd is correct
+    #
+    # @param (str)userID    Pass in user name or user ID
+    # @param (str)userPwd   User pwd. If no passing in, the function will check whether the user is exist only.
+    #                       If passing in a pwd, the function will also check the pwd.
+    #
+    # @return 
+    #   - userID, userName, sys_status, index
+    #   -- sys_status = 0: User access; 1: User exist, but no pwd to login; -1: Pwd wrong; -2: User not exist; -3: Database cannot find
+    #   -- index: The position line of the user data in database 
+    #
     def user_check(self, userID, userPwd = -1):
         
-        userAll = self.user_database_read()
-        if(userPwd == -1):
+        userAll = self.user_database_read()     # Get all database user
+        if(userPwd == -1):          # No pwd param pass in, check whether user is exist only
 
-            if(userAll == -2):
+            if(userAll == -2):              # No user
                 return -2, -2, -2, -2
 
-            if(userAll == -3):
+            if(userAll == -3):              # Database cannot connect
                 return -3, -3, -3, -3
             
-            uIndex = 0
+            uIndex = 0 # To record the position line of the user
             for user in userAll:
                 if(self.ums_encryption(userID) in user):
                     return self.ums_decryption(user[0]), self.ums_decryption(user[1]), 1, uIndex
@@ -346,7 +408,7 @@ class UserManageSys:
 
             return -2, -2, -2, -2
 
-        else:
+        else:                       # pwd pass in, also check whether the pwd is correct
 
             if(userAll == -2):
                 return -2, -2, -2, -2
@@ -370,10 +432,18 @@ class UserManageSys:
                         return self.ums_decryption(userAll[i][0]), self.ums_decryption(userAll[i][1]), -1, i
 
 
-
-        
-
-
+    ##
+    # @brief    Read user data from database
+    #
+    # @return   A list of user data list
+    #   - (list)userAll = [(list)user_1, (list)user_2, ...] = [[(str)userID, (str)userName, (str)Pwd], ...]
+    #
+    # @par
+    # @code
+    #       userAll = user_database_read()
+    #       user2_userName = userAll[1][1]
+    # @encode
+    #
     def user_database_read(self):
                                                                          # ID + Name + Pwd
         if(self.uDBRootPath == -1 or self.file_location_detect() != 0):
@@ -405,9 +475,27 @@ class UserManageSys:
         return userAll
 
 
-    def user_database_write(self, userName, userPwd, ins = False, userID = False):
+    ##
+    # @brief    Write user data to database
+    #
+    # @param (str)userName   User name to write in database
+    # @param (str)userPwd    Password name to write in database
+    # @param (int)wIndex     Overwrite the specified line in the database
+    #                   If no param passing in, the data will append at the file tail
+    #                   If param passes in, the data will overwrite in the wIndex line
+    # @param (str)userID     User ID to write in database
+    #
+    # @return   0 = Write in success
+    #
+    # @par
+    # @code
+    #       userAll = user_database_read()
+    #       user2_userName = userAll[1][1]
+    # @encode
+    #
+    def user_database_write(self, userName, userPwd, wIndex = False, userID = False):
 
-        if(ins == False or ins <= 0):
+        if(wIndex == False or wIndex <= 0):
 
             if(userID == False):
                 userID = self.user_id_create(userName)
@@ -432,6 +520,10 @@ class UserManageSys:
                     userAll[i] = user_temp[0] + '*' + self.ums_encryption(userName) + '*' + self.ums_encryption(userPwd) + '\n'
                     break
             
+            userAll[wIndex][0] = userID
+            userAll[wIndex][1] = userName
+            userAll[wIndex][2] = userPwd
+
             userFile = open(self.uDBRootPath + "\\userDataBase.ums", 'w', encoding='utf-8')
             for i in range(0, len(userAll)):
 
@@ -441,8 +533,17 @@ class UserManageSys:
             return 0
 
             
-
-
+    ##
+    # @brief    Built up database
+    # This function is provided for external call. 
+    # It is no need to call if using built-in menu.
+    # 
+    # @param (str)uDBRootPath   The root path of database.
+    # @param (list)userImport   A list of (class)UserInfo.
+    # @param (list)Pwd          A list of (str)password. Needs to correspond to the (list)userImport
+    #
+    # @return   0: Database built up success; -1: Database built up failed
+    #  
     def database_built_up(self, uDBRootPath, userImport:list = -1, Pwd:list = -1):
 
         if(not os.path.exists(uDBRootPath)):
@@ -452,27 +553,38 @@ class UserManageSys:
         f_temp = open(uDBRootPath + "\\userDataBase.ums", 'w')
         f_temp.close()
 
-        if(os.path.isfile(uDBRootPath + "\\sysInit.check")):
+        if(self.isfile(uDBRootPath + "\\sysInit.check")):
             self.uDBDisk = uDBRootPath[0]
             self.uDBRootPath = uDBRootPath
             if(userImport != -1):
                 for i in range(0, len(userImport)):
                     self.user_database_write(userImport[i].userName, Pwd[i], False, userImport[i].userID)
             self.user_log_out()
+            return 0
         else:
             self.uDBDisk = -1
             self.uDBRootPath = -1
             return -1
 
    
-
+    ##
+    # @brief    Check or search for file paths
+    # This function is to connect to the database
+    # If no given root path, i.e. (class)UserManageSys.uDBRootPath = -1, the system will ask user to select an available 
+    #   disk and create database files. Each run will automatically look for the files created.
+    # If given root path, this function will check whether this path is available.
+    # This function will run once when initializing the UserManagementSys class
+    #
+    # @return   
+    #   - 0: Database access; -3: Database cannot find or create
+    #  
     def file_location_detect(self):
 
         locationAccess = False
         
         if(self.uDBRootPath != -1):
-            if(os.path.isfile(self.uDBRootPath + "\\sysInit.Check") and
-               os.path.isfile(self.uDBRootPath + "\\userDataBase.ums")):
+            if(self.isfile(self.uDBRootPath + "\\sysInit.Check") and
+               self.isfile(self.uDBRootPath + "\\userDataBase.ums")):
                self.uDBDisk = self.uDBRootPath[0]
                locationAccess = True
                return 0
@@ -480,19 +592,19 @@ class UserManageSys:
                return -3
                                  
         
-        fileDisk = 'Z'
-        while(fileDisk >= 'A'):
+        fileDisk = 'Z'                                              # Search from disk Z~A
+        while(fileDisk >= 'A'):                                     
             rootPathTemp = fileDisk + ":\\UserManagementSystem"
-            if(os.path.isfile(rootPathTemp + "\\sysInit.check") and 
-                os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
+            if(self.isfile(rootPathTemp + "\\sysInit.check") and 
+                self.isfile(rootPathTemp + "\\userDataBase.ums")):
                 locationAccess = True
                 break
-            if(os.path.isfile(rootPathTemp + "\\userDataBase.ums")):
+            if(self.isfile(rootPathTemp + "\\userDataBase.ums")):
                 f_temp = open(rootPathTemp + "\\sysInit.check", "w")
                 f_temp.close()
                 locationAccess = True
                 break
-            if(os.path.isfile(rootPathTemp + "\\sysInit.check")):
+            if(self.isfile(rootPathTemp + "\\sysInit.check")):
                 f_temp = open(rootPathTemp + "\\userDataBase.ums", "w")
                 f_temp.close()
                 self.uDBDisk = fileDisk
@@ -501,10 +613,10 @@ class UserManageSys:
 
             fileDisk = chr(ord(fileDisk) - 1)
         
-        if(locationAccess):
+        if(locationAccess):                     # If find the database, then accesss
             self.uDBDisk = fileDisk
             self.uDBRootPath = rootPathTemp
-        else:
+        else:                                   # Ask user to input the disk for store the database
             fileDisk = '0'
             print("Is the first time to use UserManagementSystem(UMS)?")
             print("Please input an accessible Disk(A~Z) for storage the UMS Data")
@@ -512,7 +624,7 @@ class UserManageSys:
             while(not('A' <= fileDisk <= 'Z' or 'a' <= fileDisk <= 'z')):
                 fileDisk = input("Disk(Enter '0' to EXIT): ")
                 if(fileDisk == '0'):
-                    sys.exit(0)
+                    sys.exit()
                 if(not('A' <= fileDisk <= 'Z' or 'a' <= fileDisk <= 'z')):
                     print("Please input an accessible Disk(A~Z) for storage the UMS Data")
 
@@ -522,8 +634,22 @@ class UserManageSys:
             else:
                 return 0
 
+    ##
+    # @brief    Check whether the file path is exist
+    #
+    # @param    filePath    file path
+    #
+    def isfile(self, filePath):
+        try:
+            t_try = open(filePath, 'r')
+        except IOError:
+            return False
+        t_try.close()
+        return True
 
-
+    ##
+    # @brief    Functions for name checking, automatic ID generation for easier editing later
+    #
     def user_name_check(self, userName):
         if(2 <= len(userName) <= 32):
             return True
@@ -536,7 +662,15 @@ class UserManageSys:
             userID = userID[0: i] + str(ord(userName[i % len(userName) - 1]) % 10) + userID[i: len(userID)]
         userID += str(int(datetime.datetime.timestamp(datetime.datetime.now())))
         return userID
-        
+    
+    ##
+    # @brief    A very easy encryption and decryption algorithm
+    # This function is to simulate the process of encryption and decryption.
+    #
+    # @param    (str)ip     Source string
+    #
+    # @return   (str)op     Proccessed string
+    #
     def ums_encryption(self, ip):
 
         op = ""
@@ -555,9 +689,15 @@ class UserManageSys:
 
 
 
-
+##
+# @brief    To show the data of the database
+#
+# @param    fileRootPath    The root path of the database
+#
+# @note     For development and debug only
+#
 def show_user_database(fileRootPath):
-    if(os.path.isfile(fileRootPath + "\\userDataBase.ums")):
+    if(UserManageSys.isfile(fileRootPath + "\\userDataBase.ums")):
         f = open(fileRootPath + "\\userDataBase.ums", 'r', encoding='utf-8')
         while(True):
             user_sour = f.readline()
@@ -568,5 +708,5 @@ def show_user_database(fileRootPath):
             print(UserManageSys.ums_decryption(UserManageSys, user_enc[0]) + "\t\t||\t\t" + 
                     UserManageSys.ums_decryption(UserManageSys, user_enc[1]) + "\t\t||\t\t" + 
                     UserManageSys.ums_decryption(UserManageSys, user_enc[2]))
-    return 0
+    return -1
 

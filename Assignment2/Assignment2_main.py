@@ -70,7 +70,8 @@ def main():
                 print("*                                                                    *")
                 print("**********************************************************************")
 
-                ip = str(input("\nInput the number and Enter to continue: "))
+                ip = str(input("\nInput the number and Enter to continue: ")) + '0'
+                ip = ip[0]
                 if('1' <= ip <= '4'):
                     break
             
@@ -78,6 +79,9 @@ def main():
                                                     # Set the address for interfacing to the phonebook database   
                 pbFilePath = user.uDBRootPath[0] + ':\\PhoneBookSystem\\' + str(user.userInfo.userID) + ".pb"   
                 uPhoneBK = pb.phoneBk(pbFilePath)   # Connect to the PB database and assign properties to the PB class
+                if(uPhoneBK.ph_status == -1):
+                    print("Database cannot access!")
+                    sys.exit()
                 uPhoneBK.built_in_menu()            # Enter PB menu
 
 
@@ -131,7 +135,7 @@ def main():
                 continue
             if(ip == '4'):
                 user.exit_show()    # Exit
-                exit(0)
+                sys.exit()
 
 if __name__ == "__main__":
     main()

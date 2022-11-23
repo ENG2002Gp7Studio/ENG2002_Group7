@@ -106,6 +106,29 @@ import phonebook_package.phonebook as pb
 
 # print(math[0].a)
 # print(math[1].b)
+# def func():
+#     try:
+#         f = open("H:\\sss.txt", "r")
 
-test = [pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646'), pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646')]
-print(test[0].email)
+#     except OSError:
+#         print("Error")
+#         return -1
+
+#     print("good")
+#     return 0
+
+# test = [pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646'), pb.phoneRec("123456",1, '12315', '1231654,', '156156', '131654646')]
+# print(test[0].email)
+
+# t = pb.phoneBk("H:kkk.sss")
+# print(t.ph_status)
+
+# t = ums.UserManageSys("H:sss")
+# print(t.sys_status)
+print("012131321313131031201313101030123130".isnumeric())
+a = "sss-sss-sss 123:2465:534"
+a = 'Peter'.upper()
+print('12'>'4')
+
+
+
