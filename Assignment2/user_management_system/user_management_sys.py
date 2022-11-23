@@ -87,7 +87,7 @@ class UserManageSys:
             self.file_location_detect()
 
         while(True):
-            os.system("cls")
+            system("cls")
             print("**********************************************************************")
             print("*   Welcome to use ENG2002 Group7 Smart User Management System!      *")
             print("*   Please Choose the option below:                                  *")
@@ -106,7 +106,7 @@ class UserManageSys:
         if(ip == "1"):
             
             while(True):
-                os.system("cls")
+                system("cls")
                 ipUserID = input("Please input user NAME or ID: ")  
                 userID, userName, userStatus, uIndex = self.user_check(ipUserID)    
                                                                                 # -3: File Path not avialable; -2: User not exist; -1: Password Error; 
@@ -114,7 +114,7 @@ class UserManageSys:
                                                                                 # -4: Temporary no use
                 if(userStatus == -2):       # User did not exist, entry sign up menu
                     while(True):
-                        os.system("cls")
+                        system("cls")
                         print("**********************************************************************")
                         print("Dear {}, ".format(ipUserID))
                         print("You haven't an account yet. Do you want to")
@@ -130,15 +130,15 @@ class UserManageSys:
                     if(ip == '1'):
                         if(not self.user_name_check(ipUserID)):
                             print("\nYour user name is too short or too long (2~32 characters)\nPlease Change User!\n")
-                            os.system("PAUSE")
+                            system("PAUSE")
                             continue
 
                         while(True):                                # Input new pass word and check it
-                            os.system("cls")
+                            system("cls")
                             print("UserName: {}".format(ipUserID))
                             print("Please input your Password:\n")
                             st_pwd = input()
-                            os.system("cls")
+                            system("cls")
                             print("Please input your Password:\n\n" + len(st_pwd) * '*')
                             print("\nPlease input your Password again:\n")
                             nd_pwd = input()
@@ -146,7 +146,7 @@ class UserManageSys:
 
                             if(st_pwd != nd_pwd):
                                 print("Two passwords are different, please input again!\n")
-                                os.system("PAUSE")
+                                system("PAUSE")
                             else:
                                 break
                         
@@ -172,7 +172,7 @@ class UserManageSys:
 
                     for i in range(2, -1, -1):
                         
-                        os.system("cls")
+                        system("cls")
                         print("UserName: {}".format(ipUserID))
                         ipUserPwd = input("Please input password: ")
                         userID, userName, userStatus, uIndex = self.user_check(ipUserID, ipUserPwd) # Check pwd
@@ -185,11 +185,11 @@ class UserManageSys:
                             return userID, userName, 0, uIndex
                         else:
                             print("\nPassword Error! You have {} time(s) left to try.\n".format(i))
-                            os.system("PAUSE")
+                            system("PAUSE")
 
-                    os.system("cls")
+                    system("cls")
                     print("Input wrong password too many times! Please try again later!")
-                    os.system("PAUSE")
+                    system("PAUSE")
                     sys.exit()
 
                 if(userStatus == -3):       # Database cannot connect
@@ -200,7 +200,7 @@ class UserManageSys:
             while(True):
                
                 while(True):
-                    os.system("cls")
+                    system("cls")
                     ipUserName = input("Please input your user NAME (2~32 Characters): ")  
                     if(self.user_name_check(ipUserName)):
                         break
@@ -213,17 +213,17 @@ class UserManageSys:
                     return -3, -3, -3, -3
                 if(userStatus == 1):
                     print("\nThis user NAME has been exist. Please try another NAME.\n")
-                    os.system("PAUSE")
+                    system("PAUSE")
                     continue
                 else:
                     break
 
             while(True):
-                os.system("cls")
+                system("cls")
                 print("UserName: {}".format(ipUserName))
                 print("Please input your Password:\n")
                 st_pwd = input()
-                os.system("cls")
+                system("cls")
                 print("Please input your Password:\n\n" + len(st_pwd) * '*')
                 print("\nPlease input your Password again:\n")
                 nd_pwd = input()
@@ -231,7 +231,7 @@ class UserManageSys:
 
                 if(st_pwd != nd_pwd):
                     print("Two passwords are different, please input again!")
-                    os.system("PAUSE")
+                    system("PAUSE")
                 else:
                     break
                     
@@ -247,7 +247,7 @@ class UserManageSys:
             return userID, userName, userStatus, uIndex
 
         if(ip == "3"):
-            os.system("cls")
+            system("cls")
             self.exit_show()
             sys.exit()
 
@@ -256,7 +256,7 @@ class UserManageSys:
     # @brief    Display sample
     #
     def log_in_show(self, pwdLen, userID, userName):
-        os.system("cls")
+        system("cls")
         print("UserName: {}".format(userName))
         print("Please input password: " + pwdLen * '*')
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
@@ -266,11 +266,11 @@ class UserManageSys:
         print("User ID: \t{}".format(userID))
         print("User Name: \t{}".format(userName))
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
-        os.system("PAUSE")
-        os.system("CLS")
+        system("PAUSE")
+        system("CLS")
 
     def sign_up_show(self, pwdLen, userID, userName):
-        os.system("cls")
+        system("cls")
         print("UserName: {}".format(userName))
         print("Please input password: " + pwdLen * '*')
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
@@ -280,18 +280,18 @@ class UserManageSys:
         print("User ID: \t{}".format(userID))
         print("User Name: \t{}".format(userName))
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
-        os.system("PAUSE")
-        os.system("CLS")
+        system("PAUSE")
+        system("CLS")
 
     def exit_show(self):
-        os.system("cls")
+        system("cls")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
         print(" Thank you ")
         print("             for using ")
         print("                         ENG2002 Group7")
         print("                                         Smart User Management System! ")
         print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n")
-        os.system("PAUSE")
+        system("PAUSE")
 
 
     ##
@@ -710,3 +710,11 @@ def show_user_database(fileRootPath):
                     UserManageSys.ums_decryption(UserManageSys, user_enc[2]))
     return -1
 
+def system(command):
+        if(command.upper() == "CLS"):
+            for i in range(25):
+                print()
+            return 0
+        if(command.upper() == "PAUSE"):
+            input("Please input anything to continue...      ")
+            return 0

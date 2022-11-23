@@ -57,7 +57,7 @@ def main():
                 greeting = "Good evening"
 
             while(True):
-                os.system("cls")
+                system("cls")
                 print("**********************************************************************")
                 print("*   {}, dear {}  ".format(greeting, user.userInfo.userName))
                 print("*                                                                    *")
@@ -86,22 +86,22 @@ def main():
 
 
             if(ip == '2'):
-                os.system("cls")
+                system("cls")
                 print("Please input your original password: \n")
                 oriPwd = input()
                 t1, t2, pwdCheck, t4 = user.user_check(user.userInfo.userID, oriPwd)    # Check the user and password
                                                                         # Return 0: Access OK, -1: Wrong Pwd, -2: User is not in database, -3: Database path error
                 if(pwdCheck == -1):
                     print("\nWrong Password!\n")
-                    os.system("PAUSE")
+                    system("PAUSE")
                     continue
                 if(pwdCheck == 0):
                     while(True):
-                        os.system("cls")
+                        system("cls")
                         print("UserName: {}".format(user.userInfo.userName))
                         print("Please input your Password:\n")
                         st_pwd = input()
-                        os.system("cls")
+                        system("cls")
                         print("Please input your Password:\n\n" + len(st_pwd) * '*')
                         print("\nPlease input your Password again:\n")
                         nd_pwd = input()
@@ -109,15 +109,15 @@ def main():
 
                         if(st_pwd != nd_pwd):
                             print("Two passwords are different, please input again!")
-                            os.system("PAUSE")
+                            system("PAUSE")
                         else:
                             break
                     user.user_database_write(user.userInfo.userName, nd_pwd, True, user.userInfo.userID) # Write new data in database
-                    os.system("cls")
+                    system("cls")
                     print("Please input your Password:\n\n" + len(st_pwd) * '*')
                     print("\nPlease input your Password again:\n\n" + len(st_pwd) * '*')
                     print("\nChange password successfully!\n")
-                    os.system("PAUSE")
+                    system("PAUSE")
 
                 else:
                     sys.exit("Unknown Error!")  # There may be 2 situations: 
@@ -126,16 +126,25 @@ def main():
 
             if(ip == '3'):
                 user.user_log_out() # Log out
-                os.system("cls")
+                system("cls")
                 print(">>>>>>>>>>>>>>>>>>>>")
                 print("  Log out success!  ")
                 print(">>>>>>>>>>>>>>>>>>>>\n")
-                os.system("PAUSE")
+                system("PAUSE")
                 user.built_in_menu()
                 continue
             if(ip == '4'):
                 user.exit_show()    # Exit
                 sys.exit()
+
+def system(command):
+        if(command.upper() == "CLS"):
+            for i in range(25):
+                print()
+            return 0
+        if(command.upper() == "PAUSE"):
+            input("Please input anything to continue...      ")
+            return 0
 
 if __name__ == "__main__":
     main()
