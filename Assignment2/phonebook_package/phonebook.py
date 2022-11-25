@@ -1,14 +1,6 @@
 #####################################################################################
 #   This module is developed by ENG2002-Group7                                   
-#   
-#   Collaborators for tasks:
-#       Task 0: QIN Qijun
-#       Task 1: QIN Qijun
-#       Task 2: LIN Ju
-#       Task 3: NI Rouheng + QIN QIjun
-#       Task 4: QIN Qijun
-#       Program structure and database constructor: QIN Qijun
-#       
+#   Thanks Qijun for building such beautiful program structure and database    
 #####################################################################################
 
 import os

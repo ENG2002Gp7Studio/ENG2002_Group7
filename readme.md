@@ -3,9 +3,9 @@ This repository is for ENG2002 Group 7's Application Development Assignment
 
 | Name       | Student ID | Contribution |
 |------------|------------|--------------|
-| LIN Ju     | 21106434D  |       T2   |
-| NI Rouheng | 21102803D  |       T3       |              
-| QIN Qijun  | 21101279D  |Structure Construction, T0, T1, T3, T4    |
+| LIN Ju     | 21106434D  |       Tasks   |
+| NI Rouheng | 21102803D  |      Financial Support in Dining       |              
+| QIN Qijun  | 21101279D  |Structure Construction + Tasks|
 
 ## Program Naming Convention 程序命名规范
 
