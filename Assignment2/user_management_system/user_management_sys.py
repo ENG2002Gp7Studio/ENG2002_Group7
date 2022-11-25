@@ -546,7 +546,7 @@ class UserManageSys:
     #  
     def database_built_up(self, uDBRootPath, userImport:list = -1, Pwd:list = -1):
 
-        if(not os.path.exists(uDBRootPath)):
+        if(not self.isfolder(uDBRootPath)):
             os.mkdir(uDBRootPath)
         f_temp = open(uDBRootPath + "\\sysInit.check", "w")
         f_temp.close()
@@ -648,6 +648,20 @@ class UserManageSys:
         return True
 
     ##
+    # @brief    Check whether the folder is exist
+    #
+    # @param    filePath    file path
+    #
+    def isfolder(self, folderPath):
+        try:
+            t_try = open(folderPath + "\\test.t", 'w')
+        except FileNotFoundError:
+            return False
+        t_try.close()
+        os.remove(folderPath + "\\test.t")
+        return True
+
+    ##
     # @brief    Functions for name checking, automatic ID generation for easier editing later
     #
     def user_name_check(self, userName):
@@ -714,7 +728,7 @@ def system(command):
         if(command.upper() == "CLS"):
             for i in range(11):
                 if(i == 5):
-                    print("---------------------------------------------------------")
+                    print("-------------------------------------------dividing line-------------------------------------------")
                 else:
                     print()
             return 0

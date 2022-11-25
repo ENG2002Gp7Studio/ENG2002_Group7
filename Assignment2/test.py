@@ -130,5 +130,7 @@ a = "sss-sss-sss 123:2465:534"
 a = 'Peter'.upper()
 print('12'>'4')
 
+open("H:\\sss\\sss\\test.txt", 'w')
+
 
 
