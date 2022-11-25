@@ -100,33 +100,7 @@ class phoneBk:
                 self.junk.append(phRec)
 
         return conflictList     # return repetitive phRec
-
-    def split_group(self, sourList):    # give a list of phRec, split it into 3 group
-
-        family = []
-        friend = []
-        junk = []
-        for i in range(0, len(sourList)):
-            if(sourList[i].group == 1):
-                family.append(sourList[i])
-            if(sourList[i].group == 2):
-                friend.append(sourList[i])
-            if(sourList[i].group == 3):
-                junk.append(sourList[i])
-
-        return family, friend, junk
-
-
-    def ph_rec_retrieve(self, recList, phNo, grp = 0):  # Search phRec by phone number in the list based on given group
-                                                        # if grp = 0, the function will search all the group
-
-        res = []
-        for phRec in recList:
-            if(phRec.phoneNo == phNo and (phRec.group == grp or grp == 0)):
-                res.append(phRec)
-
-        return res
-
+        
 
     def del_rec(self, phNo, grp):                       #Task 0, delete a phRec by phone number and given group
         
@@ -285,6 +259,34 @@ class phoneBk:
         return self.add_rec(phRec[0])
 
     
+
+
+    def split_group(self, sourList):    # give a list of phRec, split it into 3 group
+
+        family = []
+        friend = []
+        junk = []
+        for i in range(0, len(sourList)):
+            if(sourList[i].group == 1):
+                family.append(sourList[i])
+            if(sourList[i].group == 2):
+                friend.append(sourList[i])
+            if(sourList[i].group == 3):
+                junk.append(sourList[i])
+
+        return family, friend, junk
+
+
+    def ph_rec_retrieve(self, recList, phNo, grp = 0):  # Search phRec by phone number in the list based on given group
+                                                        # if grp = 0, the function will search all the group
+
+        res = []
+        for phRec in recList:
+            if(phRec.phoneNo == phNo and (phRec.group == grp or grp == 0)):
+                res.append(phRec)
+
+        return res
+
 
 
     ##
@@ -481,7 +483,7 @@ class phoneBk:
 
     ##
     # @brief    Access database
-    # If the database is valid, access it; if not, create a new database; if it cannot be created, return an error value
+    # If the database is valid, the function will access it; if not, it creates a new database; if it cannot be created, return an error value
     #
     # @param    (str)filePath   The path of the database
     # 
@@ -499,7 +501,7 @@ class phoneBk:
             for i in range(1, len(filePath_temp) - 1):      # get root path from filePath
                 fileRootPath += "\\" + filePath_temp[i]
 
-            if(not os.path.exists(fileRootPath)):   # create folder use root path
+            if(not self.isfolder(fileRootPath)):   # create folder use root path
                 os.makedirs(fileRootPath)
             
             try:
@@ -585,6 +587,15 @@ class phoneBk:
         t_try.close()
         return True
 
+    def isfolder(self, folderPath):         # Check whether folder is exist
+        try:
+            t_try = open(folderPath + "\\test.t", 'w')
+        except FileNotFoundError:
+            return False
+        t_try.close()
+        os.remove(folderPath + "\\test.t")
+        return True
+
 
 
     def built_in_menu(self):
@@ -612,6 +623,10 @@ class phoneBk:
                 ip = ip[0]
                 if('1' <= ip <= '8'):
                     break
+                else:
+                    print("Invalid input! Please re-select a correct group.")
+                    time.sleep(3)
+
 
             if(ip == '1'):
                 while(True):
@@ -631,6 +646,9 @@ class phoneBk:
                     ip1 = ip1[0]
                     if('1' <= ip <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
                 
                 if(ip1 == '4'):
                     continue
@@ -683,6 +701,9 @@ class phoneBk:
                     ip2 = ip2[0]
                     if('1' <= ip2 <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip2 == '4'):
                     continue
@@ -723,6 +744,10 @@ class phoneBk:
                     ip3 = ip3[0]
                     if('1' <= ip3 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
+                        
                 if(ip3 == '5'):
                     continue
                 
@@ -825,6 +850,9 @@ class phoneBk:
                     ip5 = ip5[0]
                     if('1' <= ip5 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip5 == '5'):
                     continue
@@ -883,6 +911,9 @@ class phoneBk:
                     ip6 = ip6[0]
                     if('1' <= ip6 <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip6 == '4'):
                     continue
@@ -921,6 +952,9 @@ class phoneBk:
                     ip6a = ip6a[0]
                     if('1' <= ip6a <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip6a == '4'):
                     continue
@@ -1034,8 +1068,11 @@ class phoneBk:
 
 def system(command):
         if(command.upper() == "CLS"):
-            for i in range(25):
-                print()
+            for i in range(11):
+                if(i == 5):
+                    print("-------------------------------------------dividing line-------------------------------------------")
+                else:
+                    print()
             return 0
         if(command.upper() == "PAUSE"):
             input("Please input anything to continue...      ")

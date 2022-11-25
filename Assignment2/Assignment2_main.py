@@ -139,8 +139,11 @@ def main():
 
 def system(command):
         if(command.upper() == "CLS"):
-            for i in range(25):
-                print()
+            for i in range(11):
+                if(i == 5):
+                    print("-------------------------------------------dividing line-------------------------------------------")
+                else:
+                    print()
             return 0
         if(command.upper() == "PAUSE"):
             input("Please input anything to continue...      ")
