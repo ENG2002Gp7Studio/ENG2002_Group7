@@ -13,7 +13,6 @@
 
 import os
 import sys
-import time #For a pause of the program between exercution, will not affect the whole program if deleted
 
 class phoneRec:
 
@@ -625,7 +624,7 @@ class phoneBk:
                     break
                 else:
                     print("Invalid input! Please re-select a correct group.")
-                    time.sleep(3)
+                    system("pause")
 
 
             if(ip == '1'):
@@ -648,7 +647,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("pause")
                 
                 if(ip1 == '4'):
                     continue
@@ -703,7 +702,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("pause")
 
                 if(ip2 == '4'):
                     continue
@@ -746,7 +745,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("PAUSE")
                         
                 if(ip3 == '5'):
                     continue
@@ -787,7 +786,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("PAUSE")
 
                 if(ip4 == '5'):
                     continue
@@ -852,7 +851,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("PAUSE")
 
                 if(ip5 == '5'):
                     continue
@@ -913,7 +912,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("PAUSE")
 
                 if(ip6 == '4'):
                     continue
@@ -954,7 +953,7 @@ class phoneBk:
                         break
                     else:
                         print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
+                        system("PAUSE")
 
                 if(ip6a == '4'):
                     continue
