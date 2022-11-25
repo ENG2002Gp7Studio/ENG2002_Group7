@@ -971,7 +971,7 @@ class phoneBk:
                     print("The phone record\n")
                     print("     Phone Number | Name | Nickname | Email | Last call datetime")
                     self.print_one_rec(conflictList[0])
-                    print("\nhas exist in group {}\n".format(self.group[int(ip6a)]))
+                    print("\nhas already existed in the group {}\n".format(self.group[int(ip6a)]))
                     system("PAUSE")
 
 
