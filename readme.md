@@ -23,4 +23,4 @@ Assignment2
   
 ## Program Framework 程序框架
 
-<img src="https://github.com/ENG2002Gp7Studio/ENG2002_Group7/blob/master/Sources/Program%20Structure.jpg?raw=true" alt="Program Structure">
+<img src="https://github.com/ENG2002Gp7Studio/ENG2002_Group7/blob/master/Sources/Framework%20phonebk.jpg?raw=true" alt="Program Structure">
