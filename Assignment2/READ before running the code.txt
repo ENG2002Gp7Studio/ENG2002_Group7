@@ -1,0 +1,2 @@
+If you are using Jupyter notebook for evaluation, please create an . ipynb file in that folder 
+and copy the code from Assignment2_main.py into it.
