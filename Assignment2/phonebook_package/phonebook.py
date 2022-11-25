@@ -13,6 +13,7 @@
 
 import os
 import sys
+import time #For a pause of the program between exercution, will not affect the whole program if deleted
 
 class phoneRec:
 
@@ -622,6 +623,10 @@ class phoneBk:
                 ip = ip[0]
                 if('1' <= ip <= '8'):
                     break
+                else:
+                    print("Invalid input! Please re-select a correct group.")
+                    time.sleep(3)
+
 
             if(ip == '1'):
                 while(True):
@@ -641,6 +646,9 @@ class phoneBk:
                     ip1 = ip1[0]
                     if('1' <= ip <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
                 
                 if(ip1 == '4'):
                     continue
@@ -693,6 +701,9 @@ class phoneBk:
                     ip2 = ip2[0]
                     if('1' <= ip2 <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip2 == '4'):
                     continue
@@ -733,6 +744,10 @@ class phoneBk:
                     ip3 = ip3[0]
                     if('1' <= ip3 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
+                        
                 if(ip3 == '5'):
                     continue
                 
@@ -770,26 +785,29 @@ class phoneBk:
                     ip4 = ip4[0]
                     if('1' <= ip4 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip4 == '5'):
                     continue
                     
-                if(ip4 == '1'):
+                elif(ip4 == '1'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
                             invalid.append(self.family[i])
 
-                if(ip4 == '2'):
+                elif(ip4 == '2'):
                     for i in range(0, len(self.friend)): 
                         if (not self.verify_one_email(self.friend[i].email)): 
                             invalid.append(self.friend[i])
 
-                if(ip4 == '3'):
+                elif(ip4 == '3'):
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
                                 
-                if(ip4 == '4'):
+                elif(ip4 == '4'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
                             invalid.append(self.family[i])
@@ -832,6 +850,9 @@ class phoneBk:
                     ip5 = ip5[0]
                     if('1' <= ip5 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip5 == '5'):
                     continue
@@ -890,6 +911,9 @@ class phoneBk:
                     ip6 = ip6[0]
                     if('1' <= ip6 <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip6 == '4'):
                     continue
@@ -928,6 +952,9 @@ class phoneBk:
                     ip6a = ip6a[0]
                     if('1' <= ip6a <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip6a == '4'):
                     continue
