@@ -612,6 +612,10 @@ class phoneBk:
                 ip = ip[0]
                 if('1' <= ip <= '8'):
                     break
+                else:
+                    print("Invalid input! Please re-select a correct group.")
+                    time.sleep(3)
+
 
             if(ip == '1'):
                 while(True):
@@ -631,6 +635,9 @@ class phoneBk:
                     ip1 = ip1[0]
                     if('1' <= ip <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
                 
                 if(ip1 == '4'):
                     continue
@@ -683,6 +690,9 @@ class phoneBk:
                     ip2 = ip2[0]
                     if('1' <= ip2 <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip2 == '4'):
                     continue
@@ -723,6 +733,10 @@ class phoneBk:
                     ip3 = ip3[0]
                     if('1' <= ip3 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
+                        
                 if(ip3 == '5'):
                     continue
                 
@@ -825,6 +839,9 @@ class phoneBk:
                     ip5 = ip5[0]
                     if('1' <= ip5 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip5 == '5'):
                     continue
@@ -883,6 +900,9 @@ class phoneBk:
                     ip6 = ip6[0]
                     if('1' <= ip6 <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip6 == '4'):
                     continue
@@ -921,6 +941,9 @@ class phoneBk:
                     ip6a = ip6a[0]
                     if('1' <= ip6a <= '4'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip6a == '4'):
                     continue
@@ -1040,3 +1063,5 @@ def system(command):
         if(command.upper() == "PAUSE"):
             input("Please input anything to continue...      ")
             return 0
+
+
