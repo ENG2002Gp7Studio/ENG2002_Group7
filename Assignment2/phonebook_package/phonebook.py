@@ -13,7 +13,6 @@
 
 import os
 import sys
-import time #For a pause of the program between exercution, will not affect the whole program if deleted
 
 class phoneRec:
 
@@ -48,6 +47,7 @@ class phoneBk:
         self.junk = []
 
         self.group = [-1, "Family", "Friend", "Junk", "All"]   #group 1-Family 2-Friend 3-Junk
+        self.month = ["December", "January", "Feburary", "March", "April", "May", "June", "July", "Augest", "September", "October", "November", "December"]
         self.filePath = -1
  
 
@@ -547,12 +547,15 @@ class phoneBk:
 
 
     def time_combine(self, timeList, mode = 1):
-                                                # e.g. [2022, 11, 11, 12, 03, 45] -> 20221111120345         (mode = 1)
-                                                #                              or -> 2022-11-11 12:03:45    (mode = 2)
+                                                # e.g. [2022, 11, 11, 12, 03, 45] -> 20221111120345             (mode = 1)
+                                                #                              or -> 2022-11-11 12:03:45        (mode = 2)
+                                                #                              or -> 11 November 2022 12:03:45  (mode = 3)
         if(mode == 1):
             return timeList[0] + timeList[1] + timeList[2] + timeList[3] + timeList[4] + timeList[5]
         if(mode == 2):
             return timeList[0] + '-' + timeList[1] + '-' + timeList[2] + ' ' + timeList[3] + ':' + timeList[4] + ':' + timeList[5]
+        if(mode == 3):
+            return timeList[2] + ' ' + self.month[int(timeList[1])%12] + ' ' + timeList[0] + ' ' + timeList[3] + ':' + timeList[4] + ':' + timeList[5]
 
 
     def pb_encryption(self, ip):
@@ -623,10 +626,6 @@ class phoneBk:
                 ip = ip[0]
                 if('1' <= ip <= '8'):
                     break
-                else:
-                    print("Invalid input! Please re-select a correct group.")
-                    time.sleep(3)
-
 
             if(ip == '1'):
                 while(True):
@@ -646,9 +645,6 @@ class phoneBk:
                     ip1 = ip1[0]
                     if('1' <= ip <= '4'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
                 
                 if(ip1 == '4'):
                     continue
@@ -675,7 +671,7 @@ class phoneBk:
                     print("\nAdding Complete!\n\nThe new record is:\n")
                     print("Group: {}\nName: {}\nPhone Number: {}\nNickname: {}\nEmail: {}\nLast call Datetime: {}\n".format(
                         self.group[recAdd.group], recAdd.name, recAdd.phoneNo, recAdd.nickname, 
-                        recAdd.email, self.time_combine(self.time_split_str(recAdd.lastCallDate), 2)
+                        recAdd.email, self.time_combine(self.time_split_str(recAdd.lastCallDate), 3)
                     ))
                 else:
                     print("\nAdding failed! The record has been exist!\n")
@@ -701,9 +697,6 @@ class phoneBk:
                     ip2 = ip2[0]
                     if('1' <= ip2 <= '4'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
 
                 if(ip2 == '4'):
                     continue
@@ -721,7 +714,7 @@ class phoneBk:
                     print("\nDelete successfully!\nThe deleted record is:\n")
                     print("Group: {}\nName: {}\nPhone Number: {}\nNickname: {}\nEmail: {}\nLast call Datetime: {}\n".format(
                         self.group[delRec[0].group], delRec[0].name, delRec[0].phoneNo, delRec[0].nickname, 
-                        delRec[0].email, self.time_combine(self.time_split_str(delRec[0].lastCallDate), 2)))
+                        delRec[0].email, self.time_combine(self.time_split_str(delRec[0].lastCallDate), 3)))
                     system("PAUSE")
 
             if(ip == '3'):
@@ -744,10 +737,6 @@ class phoneBk:
                     ip3 = ip3[0]
                     if('1' <= ip3 <= '5'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
-                        
                 if(ip3 == '5'):
                     continue
                 
@@ -785,29 +774,26 @@ class phoneBk:
                     ip4 = ip4[0]
                     if('1' <= ip4 <= '5'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
 
                 if(ip4 == '5'):
                     continue
                     
-                elif(ip4 == '1'):
+                if(ip4 == '1'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
                             invalid.append(self.family[i])
 
-                elif(ip4 == '2'):
+                if(ip4 == '2'):
                     for i in range(0, len(self.friend)): 
                         if (not self.verify_one_email(self.friend[i].email)): 
                             invalid.append(self.friend[i])
 
-                elif(ip4 == '3'):
+                if(ip4 == '3'):
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
                                 
-                elif(ip4 == '4'):
+                if(ip4 == '4'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
                             invalid.append(self.family[i])
@@ -850,9 +836,6 @@ class phoneBk:
                     ip5 = ip5[0]
                     if('1' <= ip5 <= '5'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
 
                 if(ip5 == '5'):
                     continue
@@ -886,7 +869,7 @@ class phoneBk:
                 print("     Nickname | Name | Phone Number | Email | Last call datetime")
                 for phRec in sorted_group:
                     print("     {} | {} | {} | {} | {}".format(phRec.nickname, phRec.name, phRec.phoneNo, 
-                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
+                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 3)))
                 
                 print()
                 system("PAUSE")
@@ -911,9 +894,6 @@ class phoneBk:
                     ip6 = ip6[0]
                     if('1' <= ip6 <= '4'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
 
                 if(ip6 == '4'):
                     continue
@@ -952,9 +932,6 @@ class phoneBk:
                     ip6a = ip6a[0]
                     if('1' <= ip6a <= '4'):
                         break
-                    else:
-                        print("Invalid input! Please re-select a correct group.")
-                        time.sleep(3)
 
                 if(ip6a == '4'):
                     continue
@@ -1021,7 +998,7 @@ class phoneBk:
 
     def print_one_rec(self, phRec):
         print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
-                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
+                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 3)))
 
     def show_phone_rec(self, grp = -1, fromDatabase = False):
         if(fromDatabase):
@@ -1038,19 +1015,19 @@ class phoneBk:
             print("     Phone Number | Name | Nickname | Email | Last call datetime")
             for phRec in recGrpList[0]:
                 print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
-                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
+                                                        phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 3)))
         if(grp == 2 or grp == -1):
             print("\n{}: ".format(self.group[2]))
             print("     Phone Number | Name | Nickname | Email | Last call datetime")
             for phRec in recGrpList[1]:
                 print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
-                                                    phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
+                                                    phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 3)))
         if(grp == 3 or grp == -1):
             print("\n{}: ".format(self.group[3]))
             print("     Phone Number | Name | Nickname | Email | Last call datetime")
             for phRec in recGrpList[2]:
                 print("     {} | {} | {} | {} | {}".format(phRec.phoneNo, phRec.name, phRec.nickname, 
-                                                    phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 2)))
+                                                    phRec.email, self.time_combine(self.time_split_str(phRec.lastCallDate), 3)))
         
         system("PAUSE")
         
