@@ -13,6 +13,7 @@
 
 import os
 import sys
+import time #For a pause of the program between exercution, will not affect the whole program if deleted
 
 class phoneRec:
 
@@ -759,26 +760,29 @@ class phoneBk:
                     ip4 = ip4[0]
                     if('1' <= ip4 <= '5'):
                         break
+                    else:
+                        print("Invalid input! Please re-select a correct group.")
+                        time.sleep(3)
 
                 if(ip4 == '5'):
                     continue
                     
-                if(ip4 == '1'):
+                elif(ip4 == '1'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
                             invalid.append(self.family[i])
 
-                if(ip4 == '2'):
+                elif(ip4 == '2'):
                     for i in range(0, len(self.friend)): 
                         if (not self.verify_one_email(self.friend[i].email)): 
                             invalid.append(self.friend[i])
 
-                if(ip4 == '3'):
+                elif(ip4 == '3'):
                     for i in range(0, len(self.junk)): 
                         if (not self.verify_one_email(self.junk[i].email)): 
                             invalid.append(self.junk[i])
                                 
-                if(ip4 == '4'):
+                elif(ip4 == '4'):
                     for i in range(0, len(self.family)):
                         if (not self.verify_one_email(self.family[i].email)):
                             invalid.append(self.family[i])
