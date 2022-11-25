@@ -255,8 +255,8 @@ class phoneBk:
         phRec = self.ph_rec_retrieve(all_group[ori_grp], phNo)
         if(len(phRec) == 0):
             return [-1]
-        phRec[0].group = tar_grp
-        return self.add_rec(phRec[0])
+        new_phRec = phoneRec(phRec[0].phoneNo, tar_grp, phRec[0].name, phRec[0].nickname, phRec[0].email, phRec[0].lastCallDate)
+        return self.add_rec(new_phRec)
 
     
 
