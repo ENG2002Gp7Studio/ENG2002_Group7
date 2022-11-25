@@ -613,7 +613,7 @@ class phoneBk:
                 print("*   3. Show Phone Record sorted by latest Datetime (Task 1)          *")
                 print("*   4. Check Email Correctness (Task 2)                              *")
                 print("*   5. Show Phone Record sorted by Name (Task 3)                     *")
-                print("*   6. Copy Phone Record to Group...                                 *")
+                print("*   6. Copy Phone Record to Another Group (Task 4)                   *")
                 print("*   7. Show Phone Record                                             *")
                 print("*   8. Exit                                                          *")
                 print("*                                                                    *")
