@@ -14,8 +14,7 @@ This repository is for ENG2002 Group 7's Application Development Assignment
 ## File Structure 文件结构
 
 Assignment2
-- Assignment2_main.ipynb (用于正式提交)
-- A2_for_develop_n_debug.py (用于编写调试)
+- Assignment2_main.py (用于编写调试)
 - phonebook_package (包文件夹)
   - phonebook.py (模块Module)
 - user_management_system (包文件夹)
